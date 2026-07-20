@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 export default function SettingsDashboard() {
-
   const [farmName, setFarmName] = useState("");
   const [ownerName, setOwnerName] = useState("");
   const [phone, setPhone] = useState("");
@@ -55,179 +54,216 @@ export default function SettingsDashboard() {
     <div className="space-y-8">
 
       <div>
-        <h1 className="text-4xl font-bold">
+        <h1 className="text-3xl font-bold sm:text-4xl">
           ⚙️ Settings
         </h1>
 
-        <p className="mt-2 text-slate-400">
+        <p className="mt-2 text-sm sm:text-base text-slate-400">
           Configure your farm ERP preferences.
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
 
-        <div className="rounded-2xl bg-slate-900 p-6">
+        {/* Farm Information */}
 
-  <h2 className="mb-6 text-2xl font-bold">
-    🏢 Farm Information
-  </h2>
+        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-4 shadow-xl sm:p-6 lg:p-8">
 
-  <div className="space-y-4">
+          <h2 className="mb-6 text-xl font-bold sm:text-2xl">
+            🏢 Farm Information
+          </h2>
 
-    <input
-  value={farmName}
-  onChange={(e) => setFarmName(e.target.value)}
-  className="w-full rounded-xl bg-slate-800 p-3"
-  placeholder="Farm Name"
-/>
+          <div className="space-y-5">
 
-    <input
-  value={ownerName}
-  onChange={(e) => setOwnerName(e.target.value)}
-  className="w-full rounded-xl bg-slate-800 p-3"
-  placeholder="Owner Name"
-/>
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-400">
+                Farm Name
+              </label>
 
-    <input
-  value={phone}
-  onChange={(e) => setPhone(e.target.value)}
-  className="w-full rounded-xl bg-slate-800 p-3"
-  placeholder="Phone Number"
-/>
+              <input
+                value={farmName}
+                onChange={(e) => setFarmName(e.target.value)}
+                placeholder="Farm Name"
+                className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+              />
+            </div>
 
-    <input
-  value={email}
-  onChange={(e) => setEmail(e.target.value)}
-  className="w-full rounded-xl bg-slate-800 p-3"
-  placeholder="Email Address"
-/>
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-400">
+                Owner Name
+              </label>
 
-    <textarea
-  value={address}
-  onChange={(e) => setAddress(e.target.value)}
-  className="w-full rounded-xl bg-slate-800 p-3"
-  placeholder="Farm Address"
-  rows={3}
-/>
+              <input
+                value={ownerName}
+                onChange={(e) => setOwnerName(e.target.value)}
+                placeholder="Owner Name"
+                className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+              />
+            </div>
 
-    <button
-  onClick={saveFarmInformation}
-  className="rounded-xl bg-green-600 px-6 py-3 font-semibold hover:bg-green-500"
->
-  Save Farm Information
-</button>
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-400">
+                Phone Number
+              </label>
 
-  </div>
+              <input
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Phone Number"
+                className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+              />
+            </div>
 
-</div>
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-400">
+                Email Address
+              </label>
 
-        <div className="rounded-2xl bg-slate-900 p-6">
+              <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email Address"
+                className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+              />
+            </div>
 
-  <h2 className="mb-6 text-2xl font-bold">
-    👤 Account
-  </h2>
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-400">
+                Farm Address
+              </label>
 
-  <div className="space-y-4">
+              <textarea
+                rows={4}
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Farm Address"
+                className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+              />
+            </div>
 
-    <input
-      className="w-full rounded-xl bg-slate-800 p-3"
-      placeholder="Username"
-      defaultValue="Shawn"
-    />
+            <button
+              onClick={saveFarmInformation}
+              className="w-full rounded-xl bg-green-600 px-6 py-3 font-semibold text-white transition hover:scale-[1.02] hover:bg-green-500 sm:w-auto"
+            >
+              Save Farm Information
+            </button>
 
-    <input
-      className="w-full rounded-xl bg-slate-800 p-3"
-      placeholder="Email"
-      type="email"
-    />
+          </div>
 
-    <input
-      className="w-full rounded-xl bg-slate-800 p-3"
-      placeholder="New Password"
-      type="password"
-    />
+        </div>
 
-    <input
-      className="w-full rounded-xl bg-slate-800 p-3"
-      placeholder="Confirm Password"
-      type="password"
-    />
+        {/* Account */}
 
-    <button
-      className="rounded-xl bg-blue-600 px-6 py-3 font-semibold hover:bg-blue-500"
-    >
-      Update Account
-    </button>
+        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-4 shadow-xl sm:p-6 lg:p-8">
 
-  </div>
+          <h2 className="mb-6 text-xl font-bold sm:text-2xl">
+            👤 Account
+          </h2>
 
-</div>
+          <div className="space-y-5">
 
-        <div className="rounded-2xl bg-slate-900 p-6">
+            <input
+              className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-blue-500 focus:outline-none"
+              placeholder="Username"
+              defaultValue="Shawn"
+            />
 
-  <h2 className="mb-6 text-2xl font-bold">
-    ℹ️ About Mide Farm ERP
-  </h2>
+            <input
+              className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-blue-500 focus:outline-none"
+              placeholder="Email"
+              type="email"
+            />
 
-  <div className="space-y-3 text-slate-300">
+            <input
+              className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-blue-500 focus:outline-none"
+              placeholder="New Password"
+              type="password"
+            />
 
-    <p>
-      <strong>Version:</strong> 1.0
-    </p>
+            <input
+              className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-blue-500 focus:outline-none"
+              placeholder="Confirm Password"
+              type="password"
+            />
 
-    <p>
-      <strong>Farm:</strong> Mide Farm & Poultry
-    </p>
+            <button className="w-full rounded-xl bg-blue-600 py-3 font-semibold text-white transition hover:scale-[1.02] hover:bg-blue-500 sm:w-auto">
+              Update Account
+            </button>
 
-    <p>
-      <strong>Framework:</strong> Next.js + Supabase
-    </p>
+          </div>
 
-    <p>
-      <strong>Database:</strong> PostgreSQL
-    </p>
+        </div>
 
-    <p>
-      <strong>Designed For:</strong> Egg Layer Farm Management
-    </p>
+        {/* About */}
 
-  </div>
+        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-4 shadow-xl sm:p-6 lg:p-8">
 
-  </div>
+          <h2 className="mb-6 text-xl font-bold sm:text-2xl">
+            ℹ️ About Mide Farm ERP
+          </h2>
 
-        <div className="rounded-2xl bg-slate-900 p-6">
+          <div className="space-y-4 text-slate-300">
 
-  <h2 className="mb-6 text-2xl font-bold">
-    💾 Backup & Restore
-  </h2>
+            <InfoRow label="Version" value="1.0" />
+            <InfoRow label="Farm" value="Mide Farm & Poultry" />
+            <InfoRow label="Framework" value="Next.js + Supabase" />
+            <InfoRow label="Database" value="PostgreSQL" />
+            <InfoRow label="Designed For" value="Egg Layer Farm Management" />
 
-  <div className="space-y-4">
+          </div>
 
-    <button
-      className="w-full rounded-xl bg-green-600 py-3 font-semibold hover:bg-green-500"
-    >
-      📥 Export Farm Data
-    </button>
+        </div>
 
-    <button
-      className="w-full rounded-xl bg-blue-600 py-3 font-semibold hover:bg-blue-500"
-    >
-      📤 Import Farm Data
-    </button>
+        {/* Backup */}
 
-    <button
-      className="w-full rounded-xl bg-red-600 py-3 font-semibold hover:bg-red-500"
-    >
-      🗑 Reset Demo Data
-    </button>
+        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-4 shadow-xl sm:p-6 lg:p-8">
 
-  </div>
+          <h2 className="mb-6 text-xl font-bold sm:text-2xl">
+            💾 Backup & Restore
+          </h2>
 
-</div>
+          <div className="space-y-4">
+
+            <button className="w-full rounded-xl bg-green-600 py-3 font-semibold text-white transition hover:bg-green-500">
+              📥 Export Farm Data
+            </button>
+
+            <button className="w-full rounded-xl bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-500">
+              📤 Import Farm Data
+            </button>
+
+            <button className="w-full rounded-xl bg-red-600 py-3 font-semibold text-white transition hover:bg-red-500">
+              🗑 Reset Demo Data
+            </button>
+
+          </div>
+
+        </div>
 
       </div>
 
     </div>
+  );
+}
 
+function InfoRow({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="flex flex-col gap-1 border-b border-slate-800 pb-3 sm:flex-row sm:items-center sm:justify-between">
+
+      <span className="font-medium text-slate-400">
+        {label}
+      </span>
+
+      <span className="break-words font-semibold text-white">
+        {value}
+      </span>
+
+    </div>
   );
 }

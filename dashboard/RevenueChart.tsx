@@ -17,35 +17,41 @@ export default function RevenueChart({
   const profit = revenue - expenses;
 
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8 shadow-xl">
+    <div className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 p-4 shadow-xl sm:rounded-3xl sm:p-6 lg:p-8">
 
-      <h2 className="text-2xl font-bold">
-        💰 Revenue vs Expenses
-      </h2>
+      {/* Header */}
+      <div>
+        <h2 className="text-lg font-bold text-white sm:text-2xl">
+          💰 Revenue vs Expenses
+        </h2>
 
-      <p className="mt-2 text-slate-400">
-        Financial Overview
-      </p>
+        <p className="mt-1 text-sm text-slate-400">
+          Financial Overview
+        </p>
+      </div>
 
       {/* Revenue */}
+      <div className="mt-6">
 
-      <div className="mt-8">
+        <div className="mb-2 flex items-center justify-between gap-3">
 
-        <div className="mb-2 flex justify-between">
+          <span className="text-sm font-medium text-slate-300">
+            Revenue
+          </span>
 
-          <span>Revenue</span>
-
-          <span className="font-semibold text-green-400">
+          <span className="max-w-[60%] truncate text-sm font-bold text-green-400 sm:text-base">
             ₦{revenue.toLocaleString()}
           </span>
 
         </div>
 
-        <div className="h-4 rounded-full bg-slate-800">
+        <div className="h-3 overflow-hidden rounded-full bg-slate-800">
 
           <div
-            className="h-4 rounded-full bg-green-500 transition-all duration-500"
-            style={{ width: `${revenueWidth}%` }}
+            className="h-full rounded-full bg-green-500 transition-all duration-700"
+            style={{
+              width: `${revenueWidth}%`,
+            }}
           />
 
         </div>
@@ -53,40 +59,42 @@ export default function RevenueChart({
       </div>
 
       {/* Expenses */}
+      <div className="mt-6">
 
-      <div className="mt-8">
+        <div className="mb-2 flex items-center justify-between gap-3">
 
-        <div className="mb-2 flex justify-between">
+          <span className="text-sm font-medium text-slate-300">
+            Expenses
+          </span>
 
-          <span>Expenses</span>
-
-          <span className="font-semibold text-red-400">
+          <span className="max-w-[60%] truncate text-sm font-bold text-red-400 sm:text-base">
             ₦{expenses.toLocaleString()}
           </span>
 
         </div>
 
-        <div className="h-4 rounded-full bg-slate-800">
+        <div className="h-3 overflow-hidden rounded-full bg-slate-800">
 
           <div
-            className="h-4 rounded-full bg-red-500 transition-all duration-500"
-            style={{ width: `${expenseWidth}%` }}
+            className="h-full rounded-full bg-red-500 transition-all duration-700"
+            style={{
+              width: `${expenseWidth}%`,
+            }}
           />
 
         </div>
 
       </div>
 
-      {/* Profit */}
+      {/* Profit Card */}
+      <div className="mt-8 rounded-2xl border border-slate-700 bg-slate-800 p-4">
 
-      <div className="mt-8 rounded-2xl bg-slate-800 p-4">
-
-        <p className="text-sm text-slate-400">
+        <p className="text-xs uppercase tracking-wider text-slate-400">
           Net Profit
         </p>
 
         <h2
-          className={`mt-2 text-3xl font-bold ${
+          className={`mt-2 break-words text-2xl font-bold sm:text-3xl ${
             profit >= 0
               ? "text-green-400"
               : "text-red-400"

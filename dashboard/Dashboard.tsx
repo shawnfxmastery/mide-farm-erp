@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
-import Sidebar from "./Sidebar";
+import AppLayout from "./AppLayout";
 import Header from "./Header";
 import StatsCards from "./StatsCards";
 import ProductionChart from "./ProductionChart";
@@ -136,12 +136,10 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-950">
-      <Sidebar />
+  <AppLayout>
 
-      <main className="flex-1 p-8 text-white">
+    <Header />
 
-        <Header />
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-10">
           {stats.map((card) => (
@@ -183,12 +181,10 @@ export default function Dashboard() {
           <EggProduction />
         </div>
 
-        <div className="mt-8">
+                <div className="mt-8">
           <ProductionHistory />
         </div>
 
-      </main>
-
-    </div>
-  );
+  </AppLayout>
+);
 }

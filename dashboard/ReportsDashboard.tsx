@@ -13,42 +13,46 @@ export default function ReportsDashboard() {
   const [period, setPeriod] = useState("This Month");
 
   useEffect(() => {
-  loadReports();
-}, [period]);
+    loadReports();
+  }, [period]);
 
   async function loadReports() {
-
     let startDate: string | null = null;
 
-const today = new Date();
+    const today = new Date();
 
-switch (period) {
-  case "Today":
-    startDate = today.toISOString().split("T")[0];
-    break;
+    switch (period) {
+      case "Today":
+        startDate = today.toISOString().split("T")[0];
+        break;
 
-  case "This Week": {
-    const firstDay = new Date(today);
-    firstDay.setDate(today.getDate() - today.getDay());
-    startDate = firstDay.toISOString();
-    break;
-  }
+      case "This Week": {
+        const firstDay = new Date(today);
+        firstDay.setDate(today.getDate() - today.getDay());
+        startDate = firstDay.toISOString();
+        break;
+      }
 
-  case "This Month": {
-    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-    startDate = firstDay.toISOString();
-    break;
-  }
+      case "This Month": {
+        const firstDay = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          1
+        );
+        startDate = firstDay.toISOString();
+        break;
+      }
 
-  case "This Year": {
-    const firstDay = new Date(today.getFullYear(), 0, 1);
-    startDate = firstDay.toISOString();
-    break;
-  }
+      case "This Year": {
+        const firstDay = new Date(today.getFullYear(), 0, 1);
+        startDate = firstDay.toISOString();
+        break;
+      }
 
-  default:
-    startDate = null;
-}
+      default:
+        startDate = null;
+    }
+
     const { data: sales } = await supabase
       .from("egg_sales")
       .select("total_amount");
@@ -100,7 +104,6 @@ switch (period) {
 
     doc.setFontSize(13);
     doc.setTextColor(80);
-
     doc.text("Executive Business Report", 14, 28);
 
     doc.text(
@@ -111,9 +114,7 @@ switch (period) {
 
     autoTable(doc, {
       startY: 45,
-
       head: [["Metric", "Value"]],
-
       body: [
         ["Revenue", `₦${revenue.toLocaleString()}`],
         ["Expenses", `₦${expenses.toLocaleString()}`],
@@ -121,11 +122,9 @@ switch (period) {
         ["Production", `${production.toFixed(1)}%`],
         ["Today's Crates", `${crates}`],
       ],
-
       headStyles: {
         fillColor: [22, 163, 74],
       },
-
       styles: {
         fontSize: 11,
       },
@@ -144,44 +143,44 @@ switch (period) {
 
   return (
     <>
-      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+      <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
 
-  <div>
-    <h1 className="text-4xl font-bold">
-      📊 Executive Reports
-    </h1>
+        <div>
+          <h1 className="text-3xl font-bold sm:text-4xl">
+            📊 Executive Reports
+          </h1>
 
-    <p className="mt-2 text-slate-400">
-      Live business performance summary.
-    </p>
-  </div>
+          <p className="mt-2 text-sm sm:text-base text-slate-400">
+            Live business performance summary.
+          </p>
+        </div>
 
-  <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row">
 
-    <select
-  value={period}
-  onChange={(e) => setPeriod(e.target.value)}
-  className="rounded-xl bg-slate-800 px-4 py-3 text-white"
->
-      <option>Today</option>
-      <option>This Week</option>
-      <option>This Month</option>
-      <option>This Year</option>
-      <option>All Time</option>
-    </select>
+          <select
+            value={period}
+            onChange={(e) => setPeriod(e.target.value)}
+            className="rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white focus:border-green-500 focus:outline-none"
+          >
+            <option>Today</option>
+            <option>This Week</option>
+            <option>This Month</option>
+            <option>This Year</option>
+            <option>All Time</option>
+          </select>
 
-    <button
-      onClick={exportPDF}
-      className="rounded-xl bg-green-600 px-6 py-3 font-semibold text-white transition hover:bg-green-500"
-    >
-      📄 Export PDF
-    </button>
+          <button
+            onClick={exportPDF}
+            className="rounded-xl bg-green-600 px-6 py-3 font-semibold text-white transition hover:scale-[1.02] hover:bg-green-500"
+          >
+            📄 Export PDF
+          </button>
 
-  </div>
+        </div>
 
-</div>
+      </div>
 
-      <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
 
         <ReportCard
           title="Revenue"
@@ -213,13 +212,13 @@ switch (period) {
 
       </div>
 
-      <div className="mt-10 rounded-3xl border border-slate-800 bg-slate-900 p-8">
+      <div className="mt-8 rounded-3xl border border-slate-800 bg-slate-900 p-4 sm:p-6 lg:p-8 shadow-xl">
 
-        <h2 className="text-2xl font-bold">
+        <h2 className="text-xl font-bold sm:text-2xl">
           Business Summary
         </h2>
 
-        <div className="mt-8 space-y-5">
+        <div className="mt-6 sm:mt-8 space-y-4">
 
           <SummaryRow
             label="Total Revenue"
@@ -263,13 +262,13 @@ function ReportCard({
   color: string;
 }) {
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
+    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-4 sm:p-6 shadow-xl">
 
       <p className="text-sm text-slate-400">
         {title}
       </p>
 
-      <h2 className={`mt-4 text-4xl font-bold ${color}`}>
+      <h2 className={`mt-4 break-words text-2xl sm:text-4xl font-bold ${color}`}>
         {value}
       </h2>
 
@@ -285,13 +284,13 @@ function SummaryRow({
   value: string;
 }) {
   return (
-    <div className="flex justify-between border-b border-slate-800 pb-4">
+    <div className="flex flex-col gap-2 border-b border-slate-800 pb-4 sm:flex-row sm:items-center sm:justify-between">
 
       <span className="text-slate-400">
         {label}
       </span>
 
-      <span className="font-semibold">
+      <span className="font-semibold break-words">
         {value}
       </span>
 

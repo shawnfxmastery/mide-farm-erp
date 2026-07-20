@@ -22,25 +22,12 @@ export default function Birds() {
       return;
     }
 
-    //-----------------------------------
-    // Calculate Alive
-    //-----------------------------------
-
     const alive = qty - dead;
-
-    //-----------------------------------
-    // Mortality %
-    //-----------------------------------
 
     const mortalityPercentage =
       qty > 0 ? (dead / qty) * 100 : 0;
 
-    //-----------------------------------
-    // Age in Weeks
-    //-----------------------------------
-
     const today = new Date();
-
     const arrival = new Date(arrivalDate);
 
     const diffDays =
@@ -49,53 +36,27 @@ export default function Birds() {
 
     const ageWeeks = Math.floor(diffDays / 7);
 
-    //-----------------------------------
-    // Stage
-    //-----------------------------------
-
     let stage = "";
 
     if (ageWeeks <= 6) {
-
       stage = "Brooding";
-
     } else if (ageWeeks <= 16) {
-
       stage = "Growing";
-
     } else if (ageWeeks <= 20) {
-
       stage = "Point of Lay";
-
     } else {
-
       stage = "Laying";
-
     }
-
-    //-----------------------------------
-    // Health Status
-    //-----------------------------------
 
     let healthStatus = "";
 
     if (mortalityPercentage < 2) {
-
       healthStatus = "Healthy";
-
     } else if (mortalityPercentage < 5) {
-
       healthStatus = "Monitor";
-
     } else {
-
       healthStatus = "High Risk";
-
     }
-
-    //-----------------------------------
-    // Save
-    //-----------------------------------
 
     const { error } = await supabase
       .from("bird_batches")
@@ -137,126 +98,133 @@ export default function Birds() {
   }
 
   return (
-    <div className="mt-8 rounded-3xl border border-slate-800 bg-slate-900 p-8">
+    <div className="mt-8 rounded-3xl border border-slate-800 bg-slate-900 p-4 sm:p-6 lg:p-8 shadow-xl">
 
-      <h2 className="mb-6 text-2xl font-bold">
+      <h2 className="mb-6 text-xl font-bold sm:text-2xl">
         🐔 New Bird Batch
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
 
-  <div>
-    <label className="mb-2 block text-sm text-slate-400">
-      Batch Number
-    </label>
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-400">
+            Batch Number
+          </label>
 
-    <input
-      placeholder="FLK-001"
-      value={batchNumber}
-      onChange={(e) => setBatchNumber(e.target.value)}
-      className="w-full rounded-xl bg-slate-800 px-4 py-4"
-    />
-  </div>
+          <input
+            placeholder="FLK-001"
+            value={batchNumber}
+            onChange={(e) => setBatchNumber(e.target.value)}
+            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+          />
+        </div>
 
-  <div>
-    <label className="mb-2 block text-sm text-slate-400">
-      Breed
-    </label>
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-400">
+            Breed
+          </label>
 
-    <select
-      value={breed}
-      onChange={(e) => setBreed(e.target.value)}
-      className="w-full rounded-xl bg-slate-800 px-4 py-4"
-    >
-      <option>ISA Brown</option>
-      <option>Lohmann Brown</option>
-      <option>Hy-Line Brown</option>
-      <option>Bovan Brown</option>
-    </select>
-  </div>
+          <select
+            value={breed}
+            onChange={(e) => setBreed(e.target.value)}
+            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+          >
+            <option>ISA Brown</option>
+            <option>Lohmann Brown</option>
+            <option>Hy-Line Brown</option>
+            <option>Bovan Brown</option>
+          </select>
+        </div>
 
-  <div>
-    <label className="mb-2 block text-sm text-slate-400">
-      Arrival Date
-    </label>
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-400">
+            Arrival Date
+          </label>
 
-    <input
-      type="date"
-      value={arrivalDate}
-      onChange={(e) => setArrivalDate(e.target.value)}
-      className="w-full rounded-xl bg-slate-800 px-4 py-4"
-    />
-  </div>
+          <input
+            type="date"
+            value={arrivalDate}
+            onChange={(e) => setArrivalDate(e.target.value)}
+            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+          />
+        </div>
 
-  <div>
-    <label className="mb-2 block text-sm text-slate-400">
-      Quantity
-    </label>
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-400">
+            Quantity
+          </label>
 
-    <input
-      type="number"
-      placeholder="2000"
-      value={quantity}
-      onChange={(e) => setQuantity(e.target.value)}
-      className="w-full rounded-xl bg-slate-800 px-4 py-4"
-    />
-  </div>
+          <input
+            type="number"
+            placeholder="2000"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+          />
+        </div>
 
-  <div>
-    <label className="mb-2 block text-sm text-slate-400">
-      Mortality
-    </label>
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-400">
+            Mortality
+          </label>
 
-    <input
-      type="number"
-      placeholder="0"
-      value={mortality}
-      onChange={(e) => setMortality(e.target.value)}
-      className="w-full rounded-xl bg-slate-800 px-4 py-4"
-    />
-  </div>
+          <input
+            type="number"
+            placeholder="0"
+            value={mortality}
+            onChange={(e) => setMortality(e.target.value)}
+            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+          />
+        </div>
 
-  <div>
-    <label className="mb-2 block text-sm text-slate-400">
-      Supplier
-    </label>
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-400">
+            Supplier
+          </label>
 
-    <input
-      placeholder="Supplier Name"
-      value={supplier}
-      onChange={(e) => setSupplier(e.target.value)}
-      className="w-full rounded-xl bg-slate-800 px-4 py-4"
-    />
-  </div>
+          <input
+            placeholder="Supplier Name"
+            value={supplier}
+            onChange={(e) => setSupplier(e.target.value)}
+            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+          />
+        </div>
 
-  <div className="md:col-span-2">
-    <label className="mb-2 block text-sm text-slate-400">
-      Vaccination Status
-    </label>
+        <div className="sm:col-span-2">
+          <label className="mb-2 block text-sm font-medium text-slate-400">
+            Vaccination Status
+          </label>
 
-    <select
-      value={vaccination}
-      onChange={(e) => setVaccination(e.target.value)}
-      className="w-full rounded-xl bg-slate-800 px-4 py-4"
-    >
-      <option>Pending</option>
-      <option>In Progress</option>
-      <option>Completed</option>
-    </select>
-  </div>
+          <select
+            value={vaccination}
+            onChange={(e) => setVaccination(e.target.value)}
+            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+          >
+            <option>Pending</option>
+            <option>In Progress</option>
+            <option>Completed</option>
+          </select>
+        </div>
 
-</div>
+        <div className="sm:col-span-2">
+          <label className="mb-2 block text-sm font-medium text-slate-400">
+            Notes
+          </label>
 
-      <textarea
-        placeholder="Notes..."
-        value={notes}
-        onChange={(e) => setNotes(e.target.value)}
-        className="mt-8 h-40 w-full rounded-xl bg-slate-800 px-4 py-4 text-white placeholder-slate-500"
-      />
+          <textarea
+            placeholder="Notes..."
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            rows={5}
+            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 text-white placeholder-slate-500 focus:border-green-500 focus:outline-none"
+          />
+        </div>
+
+      </div>
 
       <button
         onClick={saveBatch}
-        className="mt-8 rounded-xl bg-green-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:bg-green-500 hover:shadow-green-500/30"
+        className="mt-6 w-full rounded-xl bg-green-600 px-6 py-3 font-semibold text-white transition hover:scale-[1.02] hover:bg-green-500 sm:w-auto"
       >
         Save Bird Batch
       </button>

@@ -42,15 +42,15 @@ export default function Sales() {
   }
 
   return (
-    <div className="mt-10 rounded-2xl bg-slate-900 p-6">
-      <h2 className="text-2xl font-bold mb-6">
+    <div className="mt-8 rounded-3xl border border-slate-800 bg-slate-900 p-4 sm:p-6 lg:p-8 shadow-xl">
+      <h2 className="mb-6 text-xl font-bold sm:text-2xl">
         💰 Egg Sales
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-6">
 
         <div>
-          <label className="block mb-2 text-slate-400">
+          <label className="mb-2 block text-sm font-medium text-slate-400">
             Date
           </label>
 
@@ -58,25 +58,25 @@ export default function Sales() {
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full rounded-lg bg-slate-800 p-3"
+            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
           />
         </div>
 
         <div>
-          <label className="block mb-2 text-slate-400">
+          <label className="mb-2 block text-sm font-medium text-slate-400">
             Customer
           </label>
 
           <input
             value={customer}
             onChange={(e) => setCustomer(e.target.value)}
-            className="w-full rounded-lg bg-slate-800 p-3"
             placeholder="Customer Name"
+            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
           />
         </div>
 
         <div>
-          <label className="block mb-2 text-slate-400">
+          <label className="mb-2 block text-sm font-medium text-slate-400">
             Crates
           </label>
 
@@ -84,12 +84,12 @@ export default function Sales() {
             type="number"
             value={crates}
             onChange={(e) => setCrates(e.target.value)}
-            className="w-full rounded-lg bg-slate-800 p-3"
+            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
           />
         </div>
 
         <div>
-          <label className="block mb-2 text-slate-400">
+          <label className="mb-2 block text-sm font-medium text-slate-400">
             Price/Crate
           </label>
 
@@ -97,19 +97,19 @@ export default function Sales() {
             type="number"
             value={pricePerCrate}
             onChange={(e) => setPricePerCrate(e.target.value)}
-            className="w-full rounded-lg bg-slate-800 p-3"
+            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
           />
         </div>
 
         <div>
-          <label className="block mb-2 text-slate-400">
+          <label className="mb-2 block text-sm font-medium text-slate-400">
             Payment
           </label>
 
           <select
             value={paymentStatus}
             onChange={(e) => setPaymentStatus(e.target.value)}
-            className="w-full rounded-lg bg-slate-800 p-3"
+            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
           >
             <option>Paid</option>
             <option>Owing</option>
@@ -117,11 +117,11 @@ export default function Sales() {
         </div>
 
         <div>
-          <label className="block mb-2 text-slate-400">
+          <label className="mb-2 block text-sm font-medium text-slate-400">
             Total
           </label>
 
-          <div className="rounded-lg bg-green-700 p-3 text-center font-bold">
+          <div className="rounded-xl bg-green-700 p-3 text-center text-lg font-bold">
             ₦{totalAmount.toLocaleString()}
           </div>
         </div>
@@ -130,7 +130,7 @@ export default function Sales() {
 
       <button
         onClick={saveSale}
-        className="mt-6 rounded-lg bg-green-600 px-6 py-3 font-bold hover:bg-green-500"
+        className="mt-6 w-full rounded-xl bg-green-600 px-6 py-3 font-bold text-white transition hover:scale-[1.02] hover:bg-green-500 sm:w-auto"
       >
         Save Sale
       </button>

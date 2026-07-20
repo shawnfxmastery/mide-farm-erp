@@ -101,14 +101,14 @@ export default function Header() {
 
   return (
     <div className="mb-10">
-      <div className="rounded-3xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900 to-green-950 p-8 shadow-2xl">
+      <div className="rounded-2xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900 to-green-950 p-4 sm:p-6 lg:p-8 shadow-2xl">
 
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
 
           {/* Left */}
           <div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
 
               <span className="rounded-full bg-green-500/20 px-4 py-1 text-sm font-semibold text-green-400">
                 {greeting}, Shawn 👋
@@ -121,11 +121,11 @@ export default function Header() {
 
             </div>
 
-            <h1 className="mt-5 text-5xl font-extrabold tracking-tight text-white">
+            <h1 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
               Mide Farm ERP
             </h1>
 
-            <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-400">
+            <p className="mt-3 max-w-3xl text-sm sm:text-base lg:text-lg leading-6 lg:leading-8 text-slate-400">
               Monitor your farm operations, bird health, egg production,
               feed inventory, sales, expenses and business performance
               from one intelligent dashboard.
@@ -134,7 +134,7 @@ export default function Header() {
           </div>
 
           {/* Right */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
             <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5">
 
@@ -143,7 +143,7 @@ export default function Header() {
                 <span className="text-sm">Farm Status</span>
               </div>
 
-              <h3 className="mt-3 text-2xl font-bold text-white">
+              <h3 className="mt-2 text-xl sm:text-2xl font-bold text-white">
                 {farmStatus}
               </h3>
 
@@ -156,8 +156,8 @@ export default function Header() {
                 <span className="text-sm">Alerts</span>
               </div>
 
-              <h3 className="mt-3 text-2xl font-bold text-white">
-                {alerts}
+              <h3 className="mt-2 text-xl sm:text-2xl font-bold text-white">
+                 {alerts}
               </h3>
 
             </div>
@@ -169,9 +169,9 @@ export default function Header() {
                 <span className="text-sm">Today's Goal</span>
               </div>
 
-              <h3 className="mt-3 text-2xl font-bold text-white">
-                {goal}
-              </h3>
+              <h3 className="mt-2 text-xl sm:text-2xl font-bold text-white">
+                 {goal}
+             </h3>
 
             </div>
 

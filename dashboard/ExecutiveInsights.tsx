@@ -57,19 +57,19 @@ export default function ExecutiveInsights() {
   }
 
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
-      <h2 className="text-2xl font-bold">🧠 Executive Insights</h2>
+    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-4 sm:p-6 lg:p-8 shadow-xl">
+      <h2 className="text-xl sm:text-2xl font-bold">🧠 Executive Insights</h2>
 
-      <div className="mt-6 space-y-3">
-        {messages.map((m, i) => (
-          <div
-            key={i}
-            className="rounded-xl bg-slate-950 p-4"
-          >
-            {m}
-          </div>
-        ))}
-      </div>
+      <div className="mt-6 sm:mt-8 space-y-3 sm:space-y-4">
+  {messages.map((m, i) => (
+    <div
+      key={i}
+      className="rounded-2xl border border-slate-800 bg-slate-950 p-4 sm:p-5 text-sm sm:text-base"
+    >
+      {m}
+    </div>
+  ))}
+</div>
     </div>
   );
 }
