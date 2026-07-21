@@ -68,12 +68,12 @@ export default function SalesList() {
   }
 
   if (loading) {
-    return (
-      <div className="rounded-2xl border border-slate-200 bg-white p-8">
-        THIS IS MY SALES LIST
-      </div>
-    );
-  }
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-8">
+      Loading sales...
+    </div>
+  );
+}
 
   if (sales.length === 0) {
     return (
@@ -92,10 +92,7 @@ export default function SalesList() {
   return (
 
     <>
-  <div className="space-y-4 bg-red-500 p-4 md:hidden">
-  <h1 className="text-2xl font-bold text-white">
-    MOBILE SALES LIST
-  </h1>
+  <div className="space-y-4 md:hidden">
     {sales.map((sale) => (
       <div
         key={sale.id}
@@ -120,11 +117,11 @@ export default function SalesList() {
           </span>
         </div>
 
-        <div className="space-y-3">
+        <div className="mt-4 space-y-3 rounded-xl bg-slate-50 p-4">
           <div className="flex justify-between">
-            <span className="text-slate-500">
-              Customer
-            </span>
+            <span className="text-sm font-medium text-slate-500">
+  Customer
+</span>
 
             <span className="font-medium">
               {sale.customer ?? "-"}
@@ -144,7 +141,7 @@ export default function SalesList() {
               Total
             </span>
 
-            <span className="font-semibold">
+            <span className="text-lg font-bold text-slate-900">
               ₦{(sale.total_amount ?? 0).toLocaleString()}
             </span>
           </div>
@@ -164,13 +161,13 @@ export default function SalesList() {
               Balance
             </span>
 
-            <span className="font-semibold text-red-600">
+            <span className="text-lg font-bold text-red-600">
               ₦{(sale.balance ?? 0).toLocaleString()}
             </span>
           </div>
         </div>
 
-        <div className="mt-5 flex justify-end gap-4">
+        <div className="mt-6 flex justify-end gap-6 border-t pt-4">
           <Link
             href={`/dashboard-v2/sales/edit/${sale.id}`}
           >

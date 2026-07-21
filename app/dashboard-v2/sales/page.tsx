@@ -1,3 +1,5 @@
+import AppLayout from "@/components/v2/layout/AppLayout";
+
 import SalesHeader from "@/components/v2/sales/SalesHeader";
 import SalesOverviewCard from "@/components/v2/sales/SalesOverviewCard";
 import SalesList from "@/components/v2/sales/SalesList";
@@ -5,14 +7,16 @@ import FloatingSalesButton from "@/components/v2/sales/FloatingSalesButton";
 
 export default function SalesPage() {
   return (
-    <div className="space-y-8">
-      <SalesHeader />
+    <AppLayout>
+      <div className="mx-auto max-w-3xl space-y-6">
+        <SalesHeader />
 
-      <SalesOverviewCard />
+        <SalesOverviewCard />
 
-      <SalesList />
+        <SalesList />
+      </div>
 
       <FloatingSalesButton />
-    </div>
+    </AppLayout>
   );
 }
