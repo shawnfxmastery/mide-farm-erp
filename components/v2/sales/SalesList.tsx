@@ -70,7 +70,7 @@ export default function SalesList() {
   if (loading) {
     return (
       <div className="rounded-2xl border border-slate-200 bg-white p-8">
-        Loading sales...
+        THIS IS MY SALES LIST
       </div>
     );
   }
@@ -90,88 +90,195 @@ export default function SalesList() {
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <table className="min-w-full">
-        <thead className="bg-slate-50">
-          <tr>
-            <th className="px-5 py-4 text-left">Date</th>
-            <th className="px-5 py-4 text-left">Customer</th>
-            <th className="px-5 py-4 text-left">Crates</th>
-            <th className="px-5 py-4 text-left">Total</th>
-            <th className="px-5 py-4 text-left">Paid</th>
-            <th className="px-5 py-4 text-left">Balance</th>
-            <th className="px-5 py-4 text-left">Status</th>
-            <th className="px-5 py-4 text-center">Actions</th>
-          </tr>
-        </thead>
 
-        <tbody>
-          {sales.map((sale) => (
-            <tr
-              key={sale.id}
-              className="border-t border-slate-200 hover:bg-slate-50"
-            >
-              <td className="px-5 py-4">
-                {sale.date ?? "-"}
-              </td>
+    <>
+  <div className="space-y-4 bg-red-500 p-4 md:hidden">
+  <h1 className="text-2xl font-bold text-white">
+    MOBILE SALES LIST
+  </h1>
+    {sales.map((sale) => (
+      <div
+        key={sale.id}
+        className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+      >
+        <div className="mb-4 flex items-center justify-between">
+          <div>
+            <p className="text-xs text-slate-500">Date</p>
+            <p className="font-semibold">
+              {sale.date ?? "-"}
+            </p>
+          </div>
 
-              <td className="px-5 py-4">
-                {sale.customer ?? "-"}
-              </td>
+          <span
+            className={`rounded-full px-3 py-1 text-xs font-semibold ${
+              sale.payment_status === "Paid"
+                ? "bg-green-100 text-green-700"
+                : "bg-yellow-100 text-yellow-700"
+            }`}
+          >
+            {sale.payment_status ?? "Pending"}
+          </span>
+        </div>
 
-              <td className="px-5 py-4">
-                {sale.crates ?? 0}
-              </td>
+        <div className="space-y-3">
+          <div className="flex justify-between">
+            <span className="text-slate-500">
+              Customer
+            </span>
 
-              <td className="px-5 py-4 font-medium">
-                ₦{(sale.total_amount ?? 0).toLocaleString()}
-              </td>
+            <span className="font-medium">
+              {sale.customer ?? "-"}
+            </span>
+          </div>
 
-              <td className="px-5 py-4">
-                ₦{(sale.amount_paid ?? 0).toLocaleString()}
-              </td>
+          <div className="flex justify-between">
+            <span className="text-slate-500">
+              Crates
+            </span>
 
-              <td className="px-5 py-4">
-                ₦{(sale.balance ?? 0).toLocaleString()}
-              </td>
+            <span>{sale.crates ?? 0}</span>
+          </div>
 
-              <td className="px-5 py-4">
-                <span
-                  className={`rounded-full px-3 py-1 text-sm font-medium ${
-                    sale.payment_status === "Paid"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-yellow-100 text-yellow-700"
-                  }`}
-                >
-                  {sale.payment_status ?? "Pending"}
-                </span>
-              </td>
+          <div className="flex justify-between">
+            <span className="text-slate-500">
+              Total
+            </span>
 
-              <td className="px-5 py-4">
-                <div className="flex justify-center gap-3">
-                  <Link
-                    href={`/dashboard-v2/sales/edit/${sale.id}`}
-                  >
-                    <Pencil
-                      size={18}
-                      className="text-blue-600 hover:text-blue-800"
-                    />
-                  </Link>
+            <span className="font-semibold">
+              ₦{(sale.total_amount ?? 0).toLocaleString()}
+            </span>
+          </div>
 
-                  <button
-                    onClick={() => deleteSale(sale.id)}
-                  >
-                    <Trash2
-                      size={18}
-                      className="text-red-600 hover:text-red-800"
-                    />
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+          <div className="flex justify-between">
+            <span className="text-slate-500">
+              Paid
+            </span>
+
+            <span>
+              ₦{(sale.amount_paid ?? 0).toLocaleString()}
+            </span>
+          </div>
+
+          <div className="flex justify-between">
+            <span className="text-slate-500">
+              Balance
+            </span>
+
+            <span className="font-semibold text-red-600">
+              ₦{(sale.balance ?? 0).toLocaleString()}
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-5 flex justify-end gap-4">
+          <Link
+            href={`/dashboard-v2/sales/edit/${sale.id}`}
+          >
+            <Pencil
+              size={18}
+              className="text-blue-600 hover:text-blue-800"
+            />
+          </Link>
+
+          <button
+            onClick={() => deleteSale(sale.id)}
+          >
+            <Trash2
+              size={18}
+              className="text-red-600 hover:text-red-800"
+            />
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+    {/* Desktop View */}
+  <div className="hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm md:block">
+    <table className="min-w-full">
+      <thead className="bg-slate-50">
+        <tr>
+          <th className="px-5 py-4 text-left">Date</th>
+          <th className="px-5 py-4 text-left">Customer</th>
+          <th className="px-5 py-4 text-left">Crates</th>
+          <th className="px-5 py-4 text-left">Total</th>
+          <th className="px-5 py-4 text-left">Paid</th>
+          <th className="px-5 py-4 text-left">Balance</th>
+          <th className="px-5 py-4 text-left">Status</th>
+          <th className="px-5 py-4 text-center">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+  {sales.map((sale) => (
+  <tr
+    key={sale.id}
+    className="border-t border-slate-200 hover:bg-slate-50"
+  >
+    <td className="px-5 py-4">
+      {sale.date ?? "-"}
+    </td>
+
+    <td className="px-5 py-4">
+      {sale.customer ?? "-"}
+    </td>
+
+    <td className="px-5 py-4">
+      {sale.crates ?? 0}
+    </td>
+
+    <td className="px-5 py-4 font-medium">
+      ₦{(sale.total_amount ?? 0).toLocaleString()}
+    </td>
+
+    <td className="px-5 py-4">
+      ₦{(sale.amount_paid ?? 0).toLocaleString()}
+    </td>
+
+    <td className="px-5 py-4">
+      ₦{(sale.balance ?? 0).toLocaleString()}
+    </td>
+
+    <td className="px-5 py-4">
+      <span
+        className={`rounded-full px-3 py-1 text-sm font-medium ${
+          sale.payment_status === "Paid"
+            ? "bg-green-100 text-green-700"
+            : "bg-yellow-100 text-yellow-700"
+        }`}
+      >
+        {sale.payment_status ?? "Pending"}
+      </span>
+    </td>
+
+    <td className="px-5 py-4">
+  <div className="flex justify-center gap-3">
+    <Link
+      href={`/dashboard-v2/sales/edit/${sale.id}`}
+    >
+      <Pencil
+        size={18}
+        className="text-blue-600 hover:text-blue-800"
+      />
+    </Link>
+
+    <button
+      onClick={() => deleteSale(sale.id)}
+    >
+      <Trash2
+        size={18}
+        className="text-red-600 hover:text-red-800"
+      />
+    </button>
+  </div>
+</td>
+
+</tr>
+))}
+
+</tbody>
+</table>
+</div>
+
+</>
+);
 }
