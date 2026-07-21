@@ -1,21 +1,29 @@
 import AppLayout from "@/components/v2/layout/AppLayout";
-import MobileHeader from "@/components/v2/layout/MobileHeader";
+import FarmSummaryCard from "@/components/v2/dashboard/FarmSummaryCard";
+import QuickActionGrid from "@/components/v2/dashboard/QuickActionGrid";
+import RecentActivity from "@/components/v2/dashboard/RecentActivity";
 
 export default function DashboardV2() {
   return (
     <AppLayout>
-      <MobileHeader />
+      <div className="mx-auto max-w-md space-y-6">
 
-      <div className="space-y-6">
         <div>
-          <h2 className="text-3xl font-bold text-slate-900">
-            Mide Farm ERP
-          </h2>
+          <h1 className="text-3xl font-bold text-slate-900">
+            Dashboard
+          </h1>
 
-          <p className="mt-2 text-slate-500">
-            Poultry Management System
+          <p className="mt-1 text-slate-500">
+            Welcome back to Mide Farm ERP
           </p>
         </div>
+
+        <FarmSummaryCard />
+
+        <QuickActionGrid />
+
+        <RecentActivity />
+
       </div>
     </AppLayout>
   );
