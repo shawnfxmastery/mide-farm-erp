@@ -1,5 +1,6 @@
 import {
   Home,
+  LayoutDashboard,
   Egg,
   Wheat,
   Wallet,
@@ -14,6 +15,11 @@ export const navigation = [
     name: "Dashboard",
     href: "/dashboard-v2",
     icon: Home,
+  },
+  {
+    name: "Analytics",
+    href: "/analytics",
+    icon: LayoutDashboard,
   },
   {
     name: "Production",

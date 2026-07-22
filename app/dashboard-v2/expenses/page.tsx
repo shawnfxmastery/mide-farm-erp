@@ -1,11 +1,25 @@
+import AppLayout from "@/components/v2/layout/AppLayout";
+
+import ExpensesHeader from "../../../components/v2/expenses/ExpensesHeader";
+import ExpensesOverviewCard from "@/components/v2/expenses/ExpensesOverviewCard";
+import ExpensesList from "@/components/v2/expenses/ExpensesList";
+import FloatingExpenseButton from "@/components/v2/expenses/FloatingExpenseButton";
+import ExpenseActions from "@/components/v2/expenses/ExpenseActions";
+
 export default function ExpensesPage() {
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold">Expenses</h1>
+    <AppLayout>
+      <div className="mx-auto max-w-3xl space-y-6">
+        <ExpensesHeader />
 
-      <p className="mt-2 text-slate-500">
-        Expenses module coming soon...
-      </p>
-    </div>
+        <ExpensesOverviewCard />
+
+        <ExpenseActions />
+
+        <ExpensesList />
+      </div>
+
+      <FloatingExpenseButton />
+    </AppLayout>
   );
 }

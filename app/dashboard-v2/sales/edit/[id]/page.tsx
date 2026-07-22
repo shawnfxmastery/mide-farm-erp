@@ -1,11 +1,9 @@
-export default async function EditSalePage() {
-  return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold">Edit Sale</h1>
+import EditSaleForm from "./EditSaleForm";
 
-      <p className="mt-2 text-slate-500">
-        Edit Sale page coming soon...
-      </p>
+export default function EditSalePage() {
+  return (
+    <div className="mx-auto max-w-3xl p-6">
+      <EditSaleForm />
     </div>
   );
 }
