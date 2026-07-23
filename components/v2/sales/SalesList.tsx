@@ -6,6 +6,8 @@ import { Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { supabase } from "@/lib/supabase";
+import SearchBar from "@/components/v2/ui/SearchBar";
+import FilterChips from "@/components/v2/ui/FilterChips";
 
 type Sale = {
   id: number;
@@ -22,6 +24,8 @@ type Sale = {
 export default function SalesList() {
   const [sales, setSales] = useState<Sale[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("All");
 
   useEffect(() => {
     loadSales();
@@ -66,6 +70,22 @@ export default function SalesList() {
 
     loadSales();
   }
+  const filteredSales = sales.filter((sale) => {
+  const matchesSearch = (sale.customer ?? "")
+    .toLowerCase()
+    .includes(search.toLowerCase());
+
+  switch (filter) {
+    case "Paid":
+      return matchesSearch && sale.payment_status === "Paid";
+
+    case "Owing":
+      return matchesSearch && sale.payment_status !== "Paid";
+
+    default:
+      return matchesSearch;
+  }
+});
 
   if (loading) {
   return (
@@ -75,25 +95,25 @@ export default function SalesList() {
   );
 }
 
-  if (sales.length === 0) {
-    return (
-      <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center">
-        <h2 className="text-lg font-semibold">
-          No sales yet
-        </h2>
-
-        <p className="mt-2 text-slate-500">
-          Start by recording your first egg sale.
-        </p>
-      </div>
-    );
-  }
 
   return (
 
     <>
+    <div className="mb-6 space-y-4">
+  <SearchBar
+    value={search}
+    onChange={setSearch}
+    placeholder="Search customer..."
+  />
+
+  <FilterChips
+    active={filter}
+    onChange={setFilter}
+    options={["All", "Paid", "Owing"]}
+  />
+</div>
   <div className="space-y-4 md:hidden">
-    {sales.map((sale) => (
+  {filteredSales.map((sale) => (
       <div
         key={sale.id}
         className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
@@ -206,7 +226,7 @@ export default function SalesList() {
       </thead>
 
       <tbody>
-  {sales.map((sale) => (
+  {filteredSales.map((sale) => (
   <tr
     key={sale.id}
     className="border-t border-slate-200 hover:bg-slate-50"

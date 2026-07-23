@@ -8,14 +8,18 @@ type Production = {
   birds: number;
   crates: number;
   pieces: number;
+  broken_eggs: number;
+  mortality: number;
 };
 
 export default function ProductionOverviewCard() {
   const [production, setProduction] = useState<Production>({
-    birds: 0,
-    crates: 0,
-    pieces: 0,
-  });
+  birds: 0,
+  crates: 0,
+  pieces: 0,
+  broken_eggs: 0,
+  mortality: 0,
+});
 
   useEffect(() => {
     loadProduction();
@@ -24,7 +28,7 @@ export default function ProductionOverviewCard() {
   async function loadProduction() {
     const { data, error } = await supabase
       .from("egg_production")
-      .select("birds, crates, pieces")
+      .select("birds, crates, pieces, broken_eggs, mortality")
       .order("date", { ascending: false })
       .limit(1)
       .single();

@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,20 +19,11 @@ export default function NewSaleForm() {
   );
 
   const [customer, setCustomer] = useState("");
-
   const [crates, setCrates] = useState("");
-
-  const [pricePerCrate, setPricePerCrate] =
-    useState("");
-
-  const [amountPaid, setAmountPaid] =
-    useState("");
-
-  const [paymentMethod, setPaymentMethod] =
-    useState("");
-
+  const [pricePerCrate, setPricePerCrate] = useState("");
+  const [amountPaid, setAmountPaid] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
   const [notes, setNotes] = useState("");
-
   const [saving, setSaving] = useState(false);
 
   const totalAmount = useMemo(() => {
@@ -93,20 +83,18 @@ export default function NewSaleForm() {
     toast.success("Sale recorded successfully");
 
     router.push("/dashboard-v2/sales");
-
     router.refresh();
   }
 
   return (
-    <Card className="mx-auto max-w-3xl">
-      <h1 className="mb-8 text-3xl font-bold">
-        Record Egg Sale
-      </h1>
+    <div className="space-y-8">
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-7 md:grid-cols-2">
 
         <div>
-          <Label>Date</Label>
+          <Label className="mb-2 block text-sm font-semibold text-slate-700">
+            Sale Date
+          </Label>
 
           <Input
             type="date"
@@ -114,11 +102,14 @@ export default function NewSaleForm() {
             onChange={(e) =>
               setDate(e.target.value)
             }
+            className="h-12 rounded-2xl"
           />
         </div>
 
         <div>
-          <Label>Customer</Label>
+          <Label className="mb-2 block text-sm font-semibold text-slate-700">
+            Customer
+          </Label>
 
           <Input
             placeholder="Customer name"
@@ -126,47 +117,62 @@ export default function NewSaleForm() {
             onChange={(e) =>
               setCustomer(e.target.value)
             }
+            className="h-12 rounded-2xl"
           />
         </div>
 
         <div>
-          <Label>Crates Sold</Label>
+          <Label className="mb-2 block text-sm font-semibold text-slate-700">
+            Crates Sold
+          </Label>
 
           <Input
             type="number"
+            placeholder="50"
             value={crates}
             onChange={(e) =>
               setCrates(e.target.value)
             }
+            className="h-12 rounded-2xl"
           />
         </div>
 
         <div>
-          <Label>Price Per Crate</Label>
+          <Label className="mb-2 block text-sm font-semibold text-slate-700">
+            Price Per Crate (₦)
+          </Label>
 
           <Input
             type="number"
+            placeholder="4500"
             value={pricePerCrate}
             onChange={(e) =>
               setPricePerCrate(e.target.value)
             }
+            className="h-12 rounded-2xl"
           />
         </div>
 
         <div>
-          <Label>Amount Paid</Label>
+          <Label className="mb-2 block text-sm font-semibold text-slate-700">
+            Amount Paid (₦)
+          </Label>
 
           <Input
             type="number"
+            placeholder="225000"
             value={amountPaid}
             onChange={(e) =>
               setAmountPaid(e.target.value)
             }
+            className="h-12 rounded-2xl"
           />
         </div>
 
         <div>
-          <Label>Payment Method</Label>
+          <Label className="mb-2 block text-sm font-semibold text-slate-700">
+            Payment Method
+          </Label>
 
           <Input
             placeholder="Cash / Transfer / POS"
@@ -174,67 +180,94 @@ export default function NewSaleForm() {
             onChange={(e) =>
               setPaymentMethod(e.target.value)
             }
+            className="h-12 rounded-2xl"
           />
         </div>
 
       </div>
 
-      <div className="mt-8 rounded-xl bg-slate-50 p-6">
+      <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
 
-        <div className="flex justify-between py-2">
-          <span>Total Amount</span>
+        <h2 className="mb-5 text-lg font-semibold text-slate-800">
+          Payment Summary
+        </h2>
 
-          <strong>
-            ₦{totalAmount.toLocaleString()}
-          </strong>
-        </div>
+        <div className="space-y-4">
 
-        <div className="flex justify-between py-2">
-          <span>Amount Paid</span>
+          <div className="flex items-center justify-between">
+            <span className="text-slate-600">
+              Total Amount
+            </span>
 
-          <strong>
-            ₦{Number(amountPaid || 0).toLocaleString()}
-          </strong>
-        </div>
+            <strong className="text-lg">
+              ₦{totalAmount.toLocaleString()}
+            </strong>
+          </div>
 
-        <div className="flex justify-between py-2">
-          <span>Balance</span>
+          <div className="flex items-center justify-between">
+            <span className="text-slate-600">
+              Amount Paid
+            </span>
 
-          <strong>
-            ₦{balance.toLocaleString()}
-          </strong>
-        </div>
+            <strong className="text-lg">
+              ₦{Number(amountPaid || 0).toLocaleString()}
+            </strong>
+          </div>
 
-        <div className="flex justify-between py-2">
-          <span>Status</span>
+          <div className="flex items-center justify-between">
+            <span className="text-slate-600">
+              Balance
+            </span>
 
-          <strong>{paymentStatus}</strong>
+            <strong className="text-lg text-red-600">
+              ₦{balance.toLocaleString()}
+            </strong>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <span className="text-slate-600">
+              Payment Status
+            </span>
+
+            <span
+              className={`rounded-full px-3 py-1 text-sm font-semibold ${
+                paymentStatus === "Paid"
+                  ? "bg-green-100 text-green-700"
+                  : "bg-orange-100 text-orange-700"
+              }`}
+            >
+              {paymentStatus}
+            </span>
+          </div>
+
         </div>
 
       </div>
 
-      <div className="mt-8">
-        <Label>Notes</Label>
+      <div>
+        <Label className="mb-2 block text-sm font-semibold text-slate-700">
+          Notes
+        </Label>
 
         <Textarea
-          rows={4}
+          rows={5}
           value={notes}
           onChange={(e) =>
             setNotes(e.target.value)
           }
+          placeholder="Optional notes..."
+          className="rounded-2xl"
         />
       </div>
 
-      <div className="mt-8 flex justify-end">
-        <Button
-          onClick={saveSale}
-          disabled={saving}
-        >
-          {saving
-            ? "Saving..."
-            : "Save Sale"}
-        </Button>
-      </div>
-    </Card>
+      <Button
+        onClick={saveSale}
+        disabled={saving}
+        className="h-12 w-full rounded-2xl bg-green-600 text-base font-semibold hover:bg-green-700"
+      >
+        {saving ? "Saving..." : "Save Sale"}
+      </Button>
+
+    </div>
   );
 }

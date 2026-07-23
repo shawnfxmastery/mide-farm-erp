@@ -15,11 +15,8 @@ export default function FeedUsageForm() {
   );
 
   const [feedType, setFeedType] = useState("");
-
   const [birdsFed, setBirdsFed] = useState("");
-
   const [bagsUsed, setBagsUsed] = useState("");
-
   const [notes, setNotes] = useState("");
 
   async function saveFeedUsage(
@@ -55,14 +52,10 @@ export default function FeedUsageForm() {
   return (
     <form
       onSubmit={saveFeedUsage}
-      className="space-y-6 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm"
+      className="space-y-7"
     >
-      <h1 className="text-3xl font-bold">
-        New Feed Usage
-      </h1>
-
       <div>
-        <label className="mb-2 block font-medium">
+        <label className="mb-2 block text-sm font-semibold text-slate-700">
           Usage Date
         </label>
 
@@ -70,25 +63,25 @@ export default function FeedUsageForm() {
           type="date"
           value={usageDate}
           onChange={(e) => setUsageDate(e.target.value)}
-          className="w-full rounded-xl border p-3"
+          className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100"
         />
       </div>
 
       <div>
-        <label className="mb-2 block font-medium">
+        <label className="mb-2 block text-sm font-semibold text-slate-700">
           Feed Type
         </label>
 
         <input
           value={feedType}
           onChange={(e) => setFeedType(e.target.value)}
-          placeholder="Growers Mash"
-          className="w-full rounded-xl border p-3"
+          placeholder="e.g. Growers Mash"
+          className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100"
         />
       </div>
 
       <div>
-        <label className="mb-2 block font-medium">
+        <label className="mb-2 block text-sm font-semibold text-slate-700">
           Birds Fed
         </label>
 
@@ -97,12 +90,12 @@ export default function FeedUsageForm() {
           value={birdsFed}
           onChange={(e) => setBirdsFed(e.target.value)}
           placeholder="1950"
-          className="w-full rounded-xl border p-3"
+          className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100"
         />
       </div>
 
       <div>
-        <label className="mb-2 block font-medium">
+        <label className="mb-2 block text-sm font-semibold text-slate-700">
           Bags Used
         </label>
 
@@ -111,28 +104,28 @@ export default function FeedUsageForm() {
           value={bagsUsed}
           onChange={(e) => setBagsUsed(e.target.value)}
           placeholder="8"
-          className="w-full rounded-xl border p-3"
+          className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100"
         />
       </div>
 
       <div>
-        <label className="mb-2 block font-medium">
+        <label className="mb-2 block text-sm font-semibold text-slate-700">
           Notes
         </label>
 
         <textarea
-          rows={4}
+          rows={5}
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          className="w-full rounded-xl border p-3"
-          placeholder="Optional..."
+          placeholder="Optional notes..."
+          className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100"
         />
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-xl bg-green-600 py-3 font-semibold text-white hover:bg-green-700"
+        className="w-full rounded-2xl bg-green-600 py-4 text-lg font-semibold text-white transition hover:bg-green-700 disabled:opacity-50"
       >
         {loading ? "Saving..." : "Save Feed Usage"}
       </button>
