@@ -2,6 +2,7 @@ import {
   Home,
   LayoutDashboard,
   Egg,
+  Package,
   Wheat,
   Wallet,
   Receipt,
@@ -25,6 +26,11 @@ export const navigation = [
     name: "Production",
     href: "/dashboard-v2/production",
     icon: Egg,
+  },
+  {
+    name: "Inventory",
+    href: "/dashboard-v2/inventory",
+    icon: Package,
   },
   {
     name: "Feed Purchases",

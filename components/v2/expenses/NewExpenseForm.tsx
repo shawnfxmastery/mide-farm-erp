@@ -63,15 +63,7 @@ export default function NewExpenseForm() {
       onSubmit={saveExpense}
       className="rounded-3xl bg-white p-8 shadow-lg space-y-6"
     >
-      <div>
-        <h1 className="text-3xl font-bold">
-          New Expense
-        </h1>
-
-        <p className="text-slate-500 mt-1">
-          Record a farm expense.
-        </p>
-      </div>
+  
 
       {/* Date */}
 

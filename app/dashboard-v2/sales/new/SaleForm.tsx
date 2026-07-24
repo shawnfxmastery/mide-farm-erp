@@ -7,9 +7,14 @@ import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 
 import { Button } from "@/components/ui/button";
+import { logInventoryActivity } from "@/lib/inventoryActivity";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  checkInventory,
+  deductInventory,
+} from "@/lib/inventory";
 
 export default function NewSaleForm() {
   const router = useRouter();
@@ -41,29 +46,36 @@ export default function NewSaleForm() {
     balance <= 0 ? "Paid" : "Owing";
 
   async function saveSale() {
-    if (!customer) {
-      toast.error("Customer is required");
-      return;
-    }
+  if (!customer) {
+    toast.error("Customer is required");
+    return;
+  }
 
-    if (!crates || Number(crates) <= 0) {
-      toast.error("Enter crates sold");
-      return;
-    }
+  if (!crates || Number(crates) <= 0) {
+    toast.error("Enter crates sold");
+    return;
+  }
 
-    if (!pricePerCrate) {
-      toast.error("Enter price per crate");
-      return;
-    }
+  if (!pricePerCrate) {
+    toast.error("Enter price per crate");
+    return;
+  }
 
-    setSaving(true);
+  setSaving(true);
 
+  try {
+    const cratesSold = Number(crates);
+
+    // Check inventory first
+    await checkInventory(cratesSold);
+
+    // Save sale
     const { error } = await supabase
       .from("egg_sales")
       .insert({
         date,
         customer,
-        crates: Number(crates),
+        crates: cratesSold,
         price_per_crate: Number(pricePerCrate),
         total_amount: totalAmount,
         amount_paid: Number(amountPaid) || 0,
@@ -73,18 +85,29 @@ export default function NewSaleForm() {
         notes,
       });
 
-    setSaving(false);
+    if (error) throw error;
 
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
+    // Deduct inventory
+    await deductInventory(cratesSold);
+
+    // Log inventory movement
+    await logInventoryActivity(
+      "Sale",
+      -cratesSold,
+      0,
+      customer
+    );
 
     toast.success("Sale recorded successfully");
 
     router.push("/dashboard-v2/sales");
     router.refresh();
+  } catch (error: any) {
+    toast.error(error.message || "Unable to save sale");
+  } finally {
+    setSaving(false);
   }
+}
 
   return (
     <div className="space-y-8">

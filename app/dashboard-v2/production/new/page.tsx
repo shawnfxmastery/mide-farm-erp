@@ -7,6 +7,9 @@ import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
 import { supabase } from "@/lib/supabase";
+import { getInventory, updateInventory } from "@/lib/inventory";
+import { logInventoryActivity } from "@/lib/inventoryActivity";
+
 import AppLayout from "@/components/v2/layout/AppLayout";
 import SectionCard from "@/components/v2/ui/SectionCard";
 
@@ -16,6 +19,7 @@ export default function NewProductionPage() {
   const [date, setDate] = useState(
     new Date().toISOString().split("T")[0]
   );
+
   const [birds, setBirds] = useState("");
   const [crates, setCrates] = useState("");
   const [pieces, setPieces] = useState("");
@@ -29,40 +33,61 @@ export default function NewProductionPage() {
 
     setSaving(true);
 
-    const { error } = await supabase
-      .from("egg_production")
-      .insert({
-        date,
-        birds: Number(birds),
-        crates: Number(crates),
-        pieces: Number(pieces),
-        broken_eggs: Number(brokenEggs),
-        mortality: Number(mortality),
-        note,
-      });
+    try {
+      const cratesProduced = Number(crates) || 0;
+      const piecesProduced = Number(pieces) || 0;
 
-    setSaving(false);
+      // Save production
+      const { error } = await supabase
+        .from("egg_production")
+        .insert({
+          date,
+          birds: Number(birds),
+          crates: cratesProduced,
+          pieces: piecesProduced,
+          broken_eggs: Number(brokenEggs),
+          mortality: Number(mortality),
+          note,
+        });
 
-    if (error) {
-      toast.error(error.message);
-      return;
+      if (error) throw error;
+
+      // Get current inventory
+      const inventory = await getInventory();
+
+      // Update inventory
+      await updateInventory(
+        inventory.crates + cratesProduced,
+        inventory.pieces + piecesProduced
+      );
+
+      // Log inventory activity
+      await logInventoryActivity(
+        "Production",
+        cratesProduced,
+        piecesProduced
+      );
+
+      toast.success("Production saved successfully!");
+
+      router.push("/dashboard-v2/production");
+      router.refresh();
+    } catch (err: any) {
+      toast.error(err.message || "Something went wrong.");
+    } finally {
+      setSaving(false);
     }
-
-    toast.success("Production saved successfully!");
-
-    router.push("/dashboard-v2/production");
-    router.refresh();
   }
 
   return (
     <AppLayout>
       <div className="mx-auto max-w-3xl space-y-6">
+
         <Link
           href="/dashboard-v2/production"
-          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
+          className="inline-flex items-center justify-center h-10 w-10 rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-50 transition"
         >
           <ArrowLeft size={18} />
-          Back to Production
         </Link>
 
         <div>
