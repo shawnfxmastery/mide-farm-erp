@@ -1,6 +1,17 @@
 "use client";
 
 import { useMemo } from "react";
+import {
+  Bird,
+  Egg,
+  DollarSign,
+  Wallet,
+  TrendingUp,
+  Wheat,
+  Skull,
+  Activity,
+} from "lucide-react";
+
 import { useDashboard } from "@/components/v2/dashboard/context/DashboardContext";
 
 export default function ExecutiveStats() {
@@ -92,7 +103,7 @@ export default function ExecutiveStats() {
 
   if (loading) {
     return (
-      <div className="rounded-3xl bg-white p-6 shadow text-center">
+      <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm">
         Loading dashboard...
       </div>
     );
@@ -100,63 +111,119 @@ export default function ExecutiveStats() {
 
   const cards = [
     {
-      title: "Birds",
+      title: "Birds Alive",
       value: stats.birds.toLocaleString(),
-      color: "bg-blue-50",
+      subtitle: "Current flock",
+      icon: Bird,
+      bg: "bg-blue-50",
+      iconBg: "bg-blue-100",
+      iconColor: "text-blue-600",
     },
     {
-      title: "Eggs Today",
+      title: "Today's Eggs",
       value: `${stats.eggsToday.toLocaleString()} Crates`,
-      color: "bg-yellow-50",
+      subtitle: "Production today",
+      icon: Egg,
+      bg: "bg-yellow-50",
+      iconBg: "bg-yellow-100",
+      iconColor: "text-yellow-600",
     },
     {
-      title: "Sales Today",
+      title: "Revenue Today",
       value: `₦${stats.salesToday.toLocaleString()}`,
-      color: "bg-green-50",
+      subtitle: "Sales received",
+      icon: DollarSign,
+      bg: "bg-green-50",
+      iconBg: "bg-green-100",
+      iconColor: "text-green-600",
     },
     {
-      title: "Expenses Today",
+      title: "Expenses",
       value: `₦${stats.expensesToday.toLocaleString()}`,
-      color: "bg-red-50",
+      subtitle: "Today's expenses",
+      icon: Wallet,
+      bg: "bg-red-50",
+      iconBg: "bg-red-100",
+      iconColor: "text-red-600",
     },
     {
-      title: "Profit Today",
+      title: "Profit",
       value: `₦${stats.profitToday.toLocaleString()}`,
-      color: "bg-emerald-50",
+      subtitle: "Net today",
+      icon: TrendingUp,
+      bg: "bg-emerald-50",
+      iconBg: "bg-emerald-100",
+      iconColor: "text-emerald-600",
     },
     {
       title: "Feed Remaining",
       value: `${stats.feedRemaining.toLocaleString()} Bags`,
-      color: "bg-orange-50",
+      subtitle: "Available stock",
+      icon: Wheat,
+      bg: "bg-orange-50",
+      iconBg: "bg-orange-100",
+      iconColor: "text-orange-600",
     },
     {
       title: "Mortality",
       value: stats.mortality.toLocaleString(),
-      color: "bg-rose-50",
+      subtitle: "Today's losses",
+      icon: Skull,
+      bg: "bg-rose-50",
+      iconBg: "bg-rose-100",
+      iconColor: "text-rose-600",
     },
     {
-      title: "Production %",
+      title: "Production Rate",
       value: `${stats.productionRate.toFixed(1)}%`,
-      color: "bg-purple-50",
+      subtitle: "Layer performance",
+      icon: Activity,
+      bg: "bg-purple-50",
+      iconBg: "bg-purple-100",
+      iconColor: "text-purple-600",
     },
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-      {cards.map((card) => (
-        <div
-          key={card.title}
-          className={`rounded-3xl ${card.color} p-5 shadow-sm`}
-        >
-          <p className="text-sm text-slate-500">
-            {card.title}
-          </p>
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+      {cards.map((card) => {
+        const Icon = card.icon;
 
-          <h2 className="mt-2 text-2xl font-bold text-slate-900">
-            {card.value}
-          </h2>
-        </div>
-      ))}
+        return (
+          <div
+            key={card.title}
+            className={`${card.bg} group rounded-3xl border border-slate-200 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl`}
+          >
+            <div className="flex items-start justify-between">
+              <div
+                className={`flex h-14 w-14 items-center justify-center rounded-2xl ${card.iconBg}`}
+              >
+                <Icon
+                  className={`h-7 w-7 ${card.iconColor}`}
+                />
+              </div>
+
+              <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-slate-500 shadow-sm">
+                Live
+              </span>
+            </div>
+
+            <p className="mt-6 text-sm font-medium text-slate-500">
+              {card.title}
+            </p>
+
+            <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">
+              {card.value}
+            </h2>
+
+            <div className="mt-5 border-t border-slate-200 pt-4">
+              <p className="text-sm text-slate-500">
+                {card.subtitle}
+              </p>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

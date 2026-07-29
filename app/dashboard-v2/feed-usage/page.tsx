@@ -1,4 +1,4 @@
-import AppLayout from "@/components/v2/layout/AppLayout";
+"use client";
 
 import FeedUsageHeader from "@/components/v2/feed-usage/FeedUsageHeader";
 import FeedUsageOverviewCard from "@/components/v2/feed-usage/FeedUsageOverviewCard";
@@ -7,8 +7,8 @@ import FloatingFeedUsageButton from "@/components/v2/feed-usage/FloatingFeedUsag
 
 export default function FeedUsagePage() {
   return (
-    <AppLayout>
-      <div className="mx-auto max-w-3xl space-y-6">
+    <>
+      <div className="space-y-6">
         <FeedUsageHeader />
 
         <FeedUsageOverviewCard />
@@ -17,6 +17,6 @@ export default function FeedUsagePage() {
       </div>
 
       <FloatingFeedUsageButton />
-    </AppLayout>
+    </>
   );
 }

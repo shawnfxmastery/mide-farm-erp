@@ -128,7 +128,7 @@ export default function SalesOverviewCard() {
               {card.title}
             </p>
 
-            <h2 className="mt-2 text-3xl font-bold text-slate-900">
+            <h2 className="mt-2 break-words text-2xl font-bold text-slate-900">
               {card.value}
             </h2>
 

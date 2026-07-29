@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { Pencil, Trash2 } from "lucide-react";
+import { deleteProduction } from "@/lib/services/production";
 
 type Production = {
   id: number;
@@ -25,13 +26,15 @@ export default function ProductionList() {
   }, []);
 
   async function loadProduction() {
+    setLoading(true);
+
     const { data, error } = await supabase
       .from("egg_production")
       .select("*")
       .order("date", { ascending: false });
 
     if (error) {
-      console.error(error);
+      console.error("Failed to load production:", error);
     } else {
       setRecords(data || []);
     }
@@ -39,26 +42,23 @@ export default function ProductionList() {
     setLoading(false);
   }
 
-  async function deleteRecord(id: number) {
+  async function deleteRecord(record: Production) {
     const confirmed = window.confirm(
       "Delete this production record?\n\nThis action cannot be undone."
     );
 
     if (!confirmed) return;
 
-    const { error } = await supabase
-      .from("egg_production")
-      .delete()
-      .eq("id", id);
+    try {
+      await deleteProduction(record.id);
 
-    if (error) {
-      alert(error.message);
-      return;
+      await loadProduction();
+
+      alert("Production deleted successfully!");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete production record.");
     }
-
-    alert("Production deleted successfully!");
-
-    await loadProduction();
   }
 
   if (loading) {
@@ -91,50 +91,48 @@ export default function ProductionList() {
               </p>
 
               <div className="mt-4 space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-slate-500">
+                    🥚 Production
+                  </span>
 
-  <div className="flex justify-between">
-    <span className="text-slate-500">
-      🥚 Production
-    </span>
+                  <span className="font-semibold">
+                    {record.crates} Crates
+                    {record.pieces > 0 &&
+                      ` + ${record.pieces} Pieces`}
+                  </span>
+                </div>
 
-    <span className="font-semibold">
-      {record.crates} Crates
-      {record.pieces > 0 &&
-        ` + ${record.pieces} Pieces`}
-    </span>
-  </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">
+                    🐔 Birds Alive
+                  </span>
 
-  <div className="flex justify-between">
-    <span className="text-slate-500">
-      🐔 Birds Alive
-    </span>
+                  <span className="font-semibold">
+                    {record.birds.toLocaleString()}
+                  </span>
+                </div>
 
-    <span className="font-semibold">
-      {record.birds.toLocaleString()}
-    </span>
-  </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">
+                    💔 Broken Eggs
+                  </span>
 
-  <div className="flex justify-between">
-    <span className="text-slate-500">
-      💔 Broken Eggs
-    </span>
+                  <span className="font-semibold">
+                    {record.broken_eggs}
+                  </span>
+                </div>
 
-    <span className="font-semibold">
-      {record.broken_eggs}
-    </span>
-  </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">
+                    ☠️ Mortality
+                  </span>
 
-  <div className="flex justify-between">
-    <span className="text-slate-500">
-      ☠️ Mortality
-    </span>
-
-    <span className="font-semibold">
-      {record.mortality}
-    </span>
-  </div>
-
-</div>
+                  <span className="font-semibold">
+                    {record.mortality}
+                  </span>
+                </div>
+              </div>
 
               {record.note && (
                 <p className="mt-2 text-sm italic text-slate-600">
@@ -153,7 +151,7 @@ export default function ProductionList() {
 
                 <button
                   type="button"
-                  onClick={() => deleteRecord(record.id)}
+                  onClick={() => deleteRecord(record)}
                   className="flex items-center gap-2 rounded-xl border border-red-200 px-4 py-2 text-red-600 transition hover:bg-red-50"
                 >
                   <Trash2 size={16} />

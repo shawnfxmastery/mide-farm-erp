@@ -9,21 +9,29 @@ import {
   Wallet,
 } from "lucide-react";
 
-import { supabase } from "@/lib/supabase";
+import { getDashboardStats } from "@/lib/services/dashboard";
 
-type Production = {
-  birds: number;
-  crates: number;
-  pieces: number;
+type DashboardStats = {
+  birdsAlive: number;
+  eggsToday: {
+    crates: number;
+    pieces: number;
+  };
   mortality: number;
+  todayFeed: number;
+  todayRevenue: number;
 };
 
 export default function FarmSummaryCard() {
-  const [production, setProduction] = useState<Production>({
-    birds: 0,
-    crates: 0,
-    pieces: 0,
+  const [stats, setStats] = useState<DashboardStats>({
+    birdsAlive: 0,
+    eggsToday: {
+      crates: 0,
+      pieces: 0,
+    },
     mortality: 0,
+    todayFeed: 0,
+    todayRevenue: 0,
   });
 
   useEffect(() => {
@@ -31,43 +39,46 @@ export default function FarmSummaryCard() {
   }, []);
 
   async function loadSummary() {
-    const { data, error } = await supabase
-      .from("egg_production")
-      .select("birds, crates, pieces, mortality")
-      .order("date", { ascending: false })
-      .limit(1)
-      .single();
+    const data = await getDashboardStats();
 
-    if (!error && data) {
-      setProduction(data);
-    }
+    setStats({
+      birdsAlive: data.birdsAlive,
+      eggsToday: data.eggsToday,
+      mortality: data.mortality,
+      todayFeed: data.todayFeed,
+      todayRevenue: data.todayRevenue,
+    });
   }
 
   const items = [
     {
       icon: Bird,
       label: "Birds Alive",
-      value: production.birds.toLocaleString(),
+      value: stats.birdsAlive.toLocaleString(),
     },
     {
       icon: Egg,
       label: "Today's Eggs",
-      value: `${production.crates} Crates ${production.pieces > 0 ? `+ ${production.pieces} Pieces` : ""}`,
+      value: `${stats.eggsToday.crates} Crates${
+        stats.eggsToday.pieces > 0
+          ? ` + ${stats.eggsToday.pieces} Pieces`
+          : ""
+      }`,
     },
     {
       icon: Skull,
       label: "Mortality",
-      value: production.mortality.toString(),
+      value: stats.mortality.toString(),
     },
     {
       icon: Wheat,
       label: "Feed Used",
-      value: "7 Bags",
+      value: `${stats.todayFeed} Bags`,
     },
     {
       icon: Wallet,
       label: "Revenue",
-      value: "₦0",
+      value: `₦${stats.todayRevenue.toLocaleString()}`,
     },
   ];
 

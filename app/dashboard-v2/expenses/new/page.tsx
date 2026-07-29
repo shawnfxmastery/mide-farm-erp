@@ -3,14 +3,13 @@
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-import AppLayout from "@/components/v2/layout/AppLayout";
 import NewExpenseForm from "@/components/v2/expenses/NewExpenseForm";
 
 export default function NewExpensePage() {
   const router = useRouter();
 
   return (
-    <AppLayout>
+  <>
       <div className="mx-auto max-w-5xl px-5 py-6">
         <button
           onClick={() => router.back()}
@@ -31,6 +30,6 @@ export default function NewExpensePage() {
 
         <NewExpenseForm />
       </div>
-    </AppLayout>
+    </>
   );
 }

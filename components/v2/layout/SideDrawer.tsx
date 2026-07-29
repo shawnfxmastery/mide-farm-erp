@@ -16,6 +16,62 @@ export default function SideDrawer({
 }: SideDrawerProps) {
   const pathname = usePathname();
 
+  const operations = navigation.filter((item) =>
+    ["Dashboard", "Production", "Sales", "Feed", "Inventory"].includes(
+      item.name
+    )
+  );
+
+  const management = navigation.filter((item) =>
+    ["Expenses", "Reports", "Workers"].includes(item.name)
+  );
+
+  const system = navigation.filter((item) =>
+    ["Settings"].includes(item.name)
+  );
+
+  const renderSection = (
+    title: string,
+    items: typeof navigation
+  ) => (
+    <div className="mb-6">
+      <p className="mb-3 px-4 text-xs font-semibold uppercase tracking-wider text-slate-400">
+        {title}
+      </p>
+
+      <div className="space-y-1">
+        {items.map((item) => {
+          const Icon = item.icon;
+
+          const active =
+  item.href === "/dashboard-v2"
+    ? pathname === "/dashboard-v2"
+    : pathname === item.href ||
+      pathname.startsWith(item.href + "/");
+
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              onClick={onClose}
+              className={`flex items-center gap-4 rounded-xl px-4 py-3 transition ${
+                active
+                  ? "bg-green-600 text-white shadow-sm"
+                  : "text-slate-700 hover:bg-slate-100"
+              }`}
+            >
+              <Icon size={20} />
+
+              <span className="font-medium">
+                {item.name}
+              </span>
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  );
+
   return (
     <>
       {/* Overlay */}
@@ -35,51 +91,36 @@ export default function SideDrawer({
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-200 p-5">
-          <div>
-            <h2 className="text-xl font-bold text-green-700">
-              Mide Farm ERP
-            </h2>
+        <div className="border-b border-slate-200 p-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-bold text-green-700">
+                Mide Farm ERP
+              </h2>
 
-            <p className="text-sm text-slate-500">
-              Poultry Management
-            </p>
+              <p className="text-sm text-slate-500">
+                Poultry Management
+              </p>
+            </div>
+
+            <button
+              onClick={onClose}
+              className="rounded-lg p-2 hover:bg-slate-100"
+            >
+              <X size={22} />
+            </button>
           </div>
-
-          <button
-            onClick={onClose}
-            className="rounded-lg p-2 hover:bg-slate-100"
-          >
-            <X size={22} />
-          </button>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 space-y-1 p-4">
-          {navigation.map((item) => {
-            const Icon = item.icon;
+        <nav className="flex-1 overflow-y-auto p-4">
 
-            const active = pathname === item.href;
+          {renderSection("Operations", operations)}
 
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                onClick={onClose}
-                className={`flex items-center gap-4 rounded-xl px-4 py-3 transition ${
-                  active
-                    ? "bg-green-600 text-white"
-                    : "text-slate-700 hover:bg-slate-100"
-                }`}
-              >
-                <Icon size={20} />
+          {renderSection("Management", management)}
 
-                <span className="font-medium">
-                  {item.name}
-                </span>
-              </Link>
-            );
-          })}
+          {renderSection("System", system)}
+
         </nav>
 
         {/* Footer */}

@@ -4,17 +4,12 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-import { supabase } from "@/lib/supabase";
+import { createSale } from "@/lib/services/sales";
 
 import { Button } from "@/components/ui/button";
-import { logInventoryActivity } from "@/lib/inventoryActivity";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  checkInventory,
-  deductInventory,
-} from "@/lib/inventory";
 
 export default function NewSaleForm() {
   const router = useRouter();
@@ -46,17 +41,19 @@ export default function NewSaleForm() {
     balance <= 0 ? "Paid" : "Owing";
 
   async function saveSale() {
-  if (!customer) {
+  if (!customer.trim()) {
     toast.error("Customer is required");
     return;
   }
 
-  if (!crates || Number(crates) <= 0) {
+  const cratesSold = Number(crates);
+
+  if (!cratesSold || cratesSold <= 0) {
     toast.error("Enter crates sold");
     return;
   }
 
-  if (!pricePerCrate) {
+  if (!pricePerCrate || Number(pricePerCrate) <= 0) {
     toast.error("Enter price per crate");
     return;
   }
@@ -64,44 +61,24 @@ export default function NewSaleForm() {
   setSaving(true);
 
   try {
-    const cratesSold = Number(crates);
-
-    // Check inventory first
-    await checkInventory(cratesSold);
-
-    // Save sale
-    const { error } = await supabase
-      .from("egg_sales")
-      .insert({
-        date,
-        customer,
-        crates: cratesSold,
-        price_per_crate: Number(pricePerCrate),
-        total_amount: totalAmount,
-        amount_paid: Number(amountPaid) || 0,
-        balance,
-        payment_status: paymentStatus,
-        payment_method: paymentMethod,
-        notes,
-      });
-
-    if (error) throw error;
-
-    // Deduct inventory
-    await deductInventory(cratesSold);
-
-    // Log inventory movement
-    await logInventoryActivity(
-      "Sale",
-      -cratesSold,
-      0,
-      customer
-    );
+    await createSale({
+      date,
+      customer,
+      crates: cratesSold,
+      pricePerCrate: Number(pricePerCrate),
+      totalAmount,
+      amountPaid: Number(amountPaid) || 0,
+      balance,
+      paymentStatus,
+      paymentMethod: paymentMethod,
+      notes,
+    });
 
     toast.success("Sale recorded successfully");
 
     router.push("/dashboard-v2/sales");
     router.refresh();
+
   } catch (error: any) {
     toast.error(error.message || "Unable to save sale");
   } finally {

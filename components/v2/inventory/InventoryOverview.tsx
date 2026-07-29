@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import SectionCard from "@/components/v2/ui/SectionCard";
+import { formatEggQuantity } from "@/lib/utils/eggFormatter";
 
 type Inventory = {
   id: number;
@@ -15,8 +16,8 @@ export default function InventoryOverview() {
   const [inventory, setInventory] = useState<Inventory | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Change this to your actual farm selling price
-  const PRICE_PER_CRATE = 5500;
+  // Farm selling price per crate
+  const PRICE_PER_CRATE = 4000;
 
   useEffect(() => {
     loadInventory();
@@ -56,53 +57,56 @@ export default function InventoryOverview() {
     );
   }
 
+  const eggs = formatEggQuantity(
+    inventory.crates,
+    inventory.pieces
+  );
+
   const inventoryValue =
-    inventory.crates * PRICE_PER_CRATE;
+    (eggs.crates + eggs.pieces / 30) * PRICE_PER_CRATE;
 
   return (
     <SectionCard>
       <div className="space-y-6">
 
-        <div className="flex items-center justify-between">
-          <span className="text-slate-500">
-            📦 Crates in Storage
-          </span>
+        {/* Available Stock */}
+        <div className="rounded-2xl bg-slate-50 p-5">
+          <p className="text-sm text-slate-500">
+            📦 Available Stock
+          </p>
 
-          <span className="text-2xl font-bold">
-            {inventory.crates}
-          </span>
+          <h2 className="mt-2 text-3xl font-bold text-slate-900">
+            {eggs.display}
+          </h2>
         </div>
 
-        <div className="flex items-center justify-between">
-          <span className="text-slate-500">
-            🥚 Loose Eggs
-          </span>
+        {/* Summary Cards */}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 
-          <span className="text-2xl font-bold">
-            {inventory.pieces}
-          </span>
-        </div>
+          <div className="rounded-2xl border border-slate-200 p-5">
+            <p className="text-sm text-slate-500">
+              💰 Inventory Value
+            </p>
 
-        <div className="flex items-center justify-between">
-          <span className="text-slate-500">
-            💰 Inventory Value
-          </span>
+            <h3 className="mt-2 text-2xl font-bold text-green-600">
+              ₦{Math.round(inventoryValue).toLocaleString()}
+            </h3>
 
-          <span className="text-2xl font-bold text-green-600">
-            ₦{inventoryValue.toLocaleString()}
-          </span>
-        </div>
+            <p className="mt-1 text-xs text-slate-400">
+              Based on ₦4,000 per crate
+            </p>
+          </div>
 
-        <div className="flex items-center justify-between border-t pt-4">
-          <span className="text-slate-500">
-            🕒 Last Updated
-          </span>
+          <div className="rounded-2xl border border-slate-200 p-5">
+            <p className="text-sm text-slate-500">
+              🕒 Last Updated
+            </p>
 
-          <span className="font-medium">
-            {new Date(
-              inventory.updated_at
-            ).toLocaleString()}
-          </span>
+            <h3 className="mt-2 text-sm font-semibold text-slate-900">
+              {new Date(inventory.updated_at).toLocaleString()}
+            </h3>
+          </div>
+
         </div>
 
       </div>

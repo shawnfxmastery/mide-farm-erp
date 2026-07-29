@@ -6,6 +6,8 @@ import { Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { supabase } from "@/lib/supabase";
+import { deleteSale as removeSale } from "@/lib/services/sales";
+
 import SearchBar from "@/components/v2/ui/SearchBar";
 import FilterChips from "@/components/v2/ui/FilterChips";
 
@@ -50,26 +52,22 @@ export default function SalesList() {
   }
 
   async function deleteSale(id: number) {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this sale?"
-    );
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this sale?"
+  );
 
-    if (!confirmed) return;
+  if (!confirmed) return;
 
-    const { error } = await supabase
-      .from("egg_sales")
-      .delete()
-      .eq("id", id);
-
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
+  try {
+    await removeSale(id);
 
     toast.success("Sale deleted successfully");
 
     loadSales();
+  } catch (error: any) {
+    toast.error(error.message || "Unable to delete sale");
   }
+}
   const filteredSales = sales.filter((sale) => {
   const matchesSearch = (sale.customer ?? "")
     .toLowerCase()

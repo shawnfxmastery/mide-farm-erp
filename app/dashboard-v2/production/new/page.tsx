@@ -10,7 +10,6 @@ import { supabase } from "@/lib/supabase";
 import { getInventory, updateInventory } from "@/lib/inventory";
 import { logInventoryActivity } from "@/lib/inventoryActivity";
 
-import AppLayout from "@/components/v2/layout/AppLayout";
 import SectionCard from "@/components/v2/ui/SectionCard";
 
 export default function NewProductionPage() {
@@ -80,7 +79,7 @@ export default function NewProductionPage() {
   }
 
   return (
-    <AppLayout>
+  <>
       <div className="mx-auto max-w-3xl space-y-6">
 
         <Link
@@ -170,6 +169,6 @@ export default function NewProductionPage() {
           </form>
         </SectionCard>
       </div>
-    </AppLayout>
+    </>
   );
 }
