@@ -5,6 +5,8 @@ import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { Pencil, Trash2 } from "lucide-react";
 import { deleteProduction } from "@/lib/services/production";
+import ConfirmDialog from "@/components/v2/ui/ConfirmDialog";
+import { useToast } from "@/components/v2/ui/useToast";
 
 type Production = {
   id: number;
@@ -20,6 +22,12 @@ type Production = {
 export default function ProductionList() {
   const [records, setRecords] = useState<Production[]>([]);
   const [loading, setLoading] = useState(true);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [selectedRecord, setSelectedRecord] =
+  useState<Production | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
+  const { showToast } = useToast();
 
   useEffect(() => {
     loadProduction();
@@ -42,24 +50,40 @@ export default function ProductionList() {
     setLoading(false);
   }
 
-  async function deleteRecord(record: Production) {
-    const confirmed = window.confirm(
-      "Delete this production record?\n\nThis action cannot be undone."
+  function deleteRecord(record: Production) {
+  setSelectedRecord(record);
+  setConfirmOpen(true);
+}
+
+async function confirmDelete() {
+  if (!selectedRecord) return;
+
+  try {
+    setDeleting(true);
+
+    await deleteProduction(selectedRecord.id);
+
+    await loadProduction();
+
+    showToast(
+      "Success",
+      "Production record deleted successfully.",
+      "success"
     );
+  } catch (error) {
+    console.error(error);
 
-    if (!confirmed) return;
-
-    try {
-      await deleteProduction(record.id);
-
-      await loadProduction();
-
-      alert("Production deleted successfully!");
-    } catch (error) {
-      console.error(error);
-      alert("Failed to delete production record.");
-    }
+    showToast(
+      "Error",
+      "Failed to delete production record.",
+      "error"
+    );
+  } finally {
+    setDeleting(false);
+    setConfirmOpen(false);
+    setSelectedRecord(null);
   }
+}
 
   if (loading) {
     return (
@@ -150,10 +174,11 @@ export default function ProductionList() {
                 </Link>
 
                 <button
-                  type="button"
-                  onClick={() => deleteRecord(record)}
-                  className="flex items-center gap-2 rounded-xl border border-red-200 px-4 py-2 text-red-600 transition hover:bg-red-50"
-                >
+  type="button"
+  disabled={deleting}
+  onClick={() => deleteRecord(record)}
+  className="flex items-center gap-2 rounded-xl border border-red-200 px-4 py-2 text-red-600 transition hover:bg-red-50 disabled:opacity-60"
+>
                   <Trash2 size={16} />
                   Delete
                 </button>
@@ -162,6 +187,22 @@ export default function ProductionList() {
           </div>
         </div>
       ))}
+      <ConfirmDialog
+  open={confirmOpen}
+  title="Delete Production Record"
+  message="Are you sure you want to delete this production record? This action cannot be undone."
+  confirmText="Delete"
+  cancelText="Cancel"
+  confirmColor="red"
+  loading={deleting}
+  onConfirm={confirmDelete}
+  onCancel={() => {
+    if (!deleting) {
+      setConfirmOpen(false);
+      setSelectedRecord(null);
+    }
+  }}
+/>
     </div>
   );
 }
