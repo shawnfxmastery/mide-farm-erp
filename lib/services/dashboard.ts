@@ -1,9 +1,10 @@
 import { supabase } from "@/lib/supabase";
+import { getTodayNigeria } from "@/lib/date";
 
 const CRATE_VALUE = 4000;
 
 export async function getDashboardStats() {
-  const today = new Date().toISOString().split("T")[0];
+  const today = getTodayNigeria();
 
   const [
     inventory,

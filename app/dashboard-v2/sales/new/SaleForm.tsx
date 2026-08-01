@@ -10,13 +10,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { getTodayNigeria } from "@/lib/date";
 
 export default function NewSaleForm() {
   const router = useRouter();
 
-  const [date, setDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const [date, setDate] = useState(getTodayNigeria());
 
   const [customer, setCustomer] = useState("");
   const [crates, setCrates] = useState("");
@@ -89,7 +88,15 @@ export default function NewSaleForm() {
   return (
     <div className="space-y-8">
 
-      <div className="grid gap-7 md:grid-cols-2">
+      {/* Customer Information */}
+
+<div className="rounded-2xl border border-slate-200 p-5">
+
+  <h2 className="mb-5 text-lg font-bold text-slate-900">
+    👤 Customer Information
+  </h2>
+
+  <div className="grid gap-7 md:grid-cols-2">
 
         <div>
           <Label className="mb-2 block text-sm font-semibold text-slate-700">
@@ -107,24 +114,37 @@ export default function NewSaleForm() {
         </div>
 
         <div>
-          <Label className="mb-2 block text-sm font-semibold text-slate-700">
-            Customer
-          </Label>
+  <Label className="mb-2 block text-sm font-semibold text-slate-700">
+    Customer
+  </Label>
 
-          <Input
-            placeholder="Customer name"
-            value={customer}
-            onChange={(e) =>
-              setCustomer(e.target.value)
-            }
-            className="h-12 rounded-2xl"
-          />
-        </div>
+  <Input
+    placeholder="Customer name"
+    value={customer}
+    onChange={(e) =>
+      setCustomer(e.target.value)
+    }
+    className="h-12 rounded-2xl"
+  />
+</div>
 
-        <div>
-          <Label className="mb-2 block text-sm font-semibold text-slate-700">
-            Crates Sold
-          </Label>
+  </div>
+
+</div>
+
+{/* Egg Sale */}
+
+<div className="rounded-2xl border border-slate-200 p-5">
+
+  <h2 className="mb-5 text-lg font-bold text-slate-900">
+    🥚 Egg Sale
+  </h2>
+
+  <div className="grid gap-7 md:grid-cols-2">
+<div>
+  <Label className="mb-2 block text-sm font-semibold text-slate-700">
+    Crates Sold
+  </Label>
 
           <Input
             type="number"
@@ -143,15 +163,28 @@ export default function NewSaleForm() {
           </Label>
 
           <Input
-            type="number"
-            placeholder="4500"
-            value={pricePerCrate}
-            onChange={(e) =>
-              setPricePerCrate(e.target.value)
-            }
-            className="h-12 rounded-2xl"
-          />
-        </div>
+  type="number"
+  placeholder="4500"
+  value={pricePerCrate}
+  onChange={(e) =>
+    setPricePerCrate(e.target.value)
+  }
+  className="h-12 rounded-2xl"
+/>
+
+</div>
+
+</div>
+
+{/* Payment */}
+
+<div className="rounded-2xl border border-slate-200 p-5">
+
+  <h2 className="mb-5 text-lg font-bold text-slate-900">
+    💳 Payment
+  </h2>
+
+  <div className="space-y-5">
 
         <div>
           <Label className="mb-2 block text-sm font-semibold text-slate-700">
@@ -183,6 +216,9 @@ export default function NewSaleForm() {
             className="h-12 rounded-2xl"
           />
         </div>
+          </div>
+
+</div>
 
       </div>
 

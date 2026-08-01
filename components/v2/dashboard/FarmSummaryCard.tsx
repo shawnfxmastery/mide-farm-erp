@@ -83,37 +83,70 @@ export default function FarmSummaryCard() {
   ];
 
   return (
-    <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-xl font-bold text-slate-900">
-        Farm Summary
-      </h2>
+    <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
 
-      <div className="mt-5 space-y-4">
+      {/* Header */}
+
+      <div className="border-b border-slate-100 bg-gradient-to-r from-green-50 to-white p-5">
+
+        <div className="flex items-center justify-between">
+
+          <div>
+
+            <h2 className="text-xl font-bold text-slate-900">
+              Farm Summary
+            </h2>
+
+            <p className="mt-1 text-sm text-slate-500">
+              Live overview of today's farm performance
+            </p>
+
+          </div>
+
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-green-100 text-2xl">
+            🐔
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* Cards */}
+
+      <div className="grid grid-cols-2 gap-4 p-5">
+
         {items.map((item) => {
           const Icon = item.icon;
 
           return (
             <div
               key={item.label}
-              className="flex items-center justify-between"
+              className="rounded-2xl border border-slate-200 bg-white p-4 transition hover:border-green-400 hover:shadow-md"
             >
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-100 text-green-700">
-                  <Icon size={18} />
-                </div>
 
-                <span className="text-slate-600">
-                  {item.label}
-                </span>
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-green-100">
+
+                <Icon
+                  size={20}
+                  className="text-green-700"
+                />
+
               </div>
 
-              <span className="font-bold text-slate-900">
+              <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                {item.label}
+              </p>
+
+              <h3 className="mt-2 text-2xl font-bold text-slate-900 break-words">
                 {item.value}
-              </span>
+              </h3>
+
             </div>
           );
         })}
+
       </div>
+
     </section>
   );
 }

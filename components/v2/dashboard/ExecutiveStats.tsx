@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import { useDashboard } from "@/components/v2/dashboard/context/DashboardContext";
+import { getTodayNigeria } from "@/lib/date";
 
 export default function ExecutiveStats() {
   const {
@@ -25,7 +26,7 @@ export default function ExecutiveStats() {
   } = useDashboard();
 
   const stats = useMemo(() => {
-    const today = new Date().toISOString().split("T")[0];
+    const today = getTodayNigeria();
 
     const todayProduction = production.filter(
       (item) => item.date === today

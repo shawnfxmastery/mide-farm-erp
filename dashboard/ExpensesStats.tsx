@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { getTodayNigeria } from "@/lib/date";
 
 export default function ExpensesStats() {
   const [todayExpenses, setTodayExpenses] = useState(0);
@@ -20,7 +21,7 @@ export default function ExpensesStats() {
 
     if (!data) return;
 
-    const today = new Date().toISOString().split("T")[0];
+    const today = getTodayNigeria();
     const month = new Date().getMonth();
     const year = new Date().getFullYear();
 

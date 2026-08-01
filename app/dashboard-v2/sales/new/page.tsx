@@ -9,23 +9,33 @@ export default function NewSalePage() {
   const router = useRouter();
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-5 py-6">
+    <div className="mx-auto w-full max-w-3xl space-y-6">
+
+      {/* Back Button */}
 
       <button
         onClick={() => router.back()}
-        className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-50"
+        className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white shadow-sm transition hover:bg-slate-50"
       >
-        <ArrowLeft size={18} />
+        <ArrowLeft size={20} />
       </button>
 
-      <div className="mt-6 mb-8">
-        <h1 className="text-4xl font-bold text-slate-900">
-          Record Sale
+      {/* Hero */}
+
+      <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-green-700 via-green-600 to-green-500 p-6 text-white shadow-xl">
+
+        <p className="text-sm text-green-100">
+          Sales Module
+        </p>
+
+        <h1 className="mt-2 text-3xl font-bold">
+          💰 Record Sale
         </h1>
 
-        <p className="mt-2 text-slate-500">
-          Record today's egg sales and customer payment.
+        <p className="mt-2 text-green-100">
+          Record egg sales and automatically update inventory.
         </p>
+
       </div>
 
       <NewSaleForm />

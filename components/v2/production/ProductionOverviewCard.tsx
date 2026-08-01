@@ -9,6 +9,7 @@ import {
   CircleOff,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { getTodayNigeria } from "@/lib/date";
 
 type Production = {
   birds: number;
@@ -32,7 +33,7 @@ export default function ProductionOverviewCard() {
   }, []);
 
   async function loadProduction() {
-    const today = new Date().toISOString().split("T")[0];
+    const today = getTodayNigeria();
 
     // Today's production
     const { data: todayProduction } = await supabase
