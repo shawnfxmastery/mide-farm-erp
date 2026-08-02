@@ -9,6 +9,7 @@ import {
 } from "react";
 
 import { supabase } from "@/lib/supabase";
+import { getTodayNigeria } from "@/lib/date";
 
 type DashboardData = {
   production: any[];
@@ -42,6 +43,8 @@ export function DashboardProvider({
   async function refresh() {
     setLoading(true);
 
+    const today = getTodayNigeria();
+
     const [
       productionResult,
       salesResult,
@@ -52,27 +55,35 @@ export function DashboardProvider({
       supabase
         .from("egg_production")
         .select("*")
-        .order("date"),
+        .eq("date", today)
+        .order("date", { ascending: false }),
 
       supabase
         .from("egg_sales")
         .select("*")
-        .order("date"),
+        .eq("date", today)
+        .order("date", { ascending: false }),
 
       supabase
         .from("expenses")
         .select("*")
-        .order("date"),
+        .eq("date", today)
+        .order("date", { ascending: false }),
 
       supabase
         .from("feed_inventory")
         .select("*")
-        .order("purchase_date"),
+        .order("purchase_date", {
+          ascending: false,
+        }),
 
       supabase
         .from("feed_usage")
         .select("*")
-        .order("usage_date"),
+        .eq("usage_date", today)
+        .order("usage_date", {
+          ascending: false,
+        }),
     ]);
 
     setProduction(productionResult.data ?? []);

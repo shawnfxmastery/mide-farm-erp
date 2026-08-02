@@ -1,8 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import {
-  sellEggs,
-  reverseSale,
-} from "./inventory";
+import { recalculateInventory } from "./recalculateInventory";
 
 export type SaleInput = {
   date: string;
@@ -20,19 +17,13 @@ export type SaleInput = {
 export async function createSale(
   sale: SaleInput
 ) {
-  // Deduct inventory first
-  await sellEggs(
-    sale.crates,
-    0,
-    sale.customer
-  );
-
   const { data, error } = await supabase
     .from("egg_sales")
     .insert({
       date: sale.date,
       customer: sale.customer,
       crates: sale.crates,
+      pieces: 0,
       price_per_crate: sale.pricePerCrate,
       total_amount: sale.totalAmount,
       amount_paid: sale.amountPaid,
@@ -44,52 +35,48 @@ export async function createSale(
     .select()
     .single();
 
-  if (error) {
-    // Roll back inventory
-    await reverseSale(
-      sale.crates,
-      0
-    );
+  if (error) throw error;
 
-    throw error;
-  }
+  await recalculateInventory();
 
   return data;
+}
+
+export async function updateSale(
+  id: number,
+  sale: SaleInput
+) {
+  const { error } = await supabase
+    .from("egg_sales")
+    .update({
+      date: sale.date,
+      customer: sale.customer,
+      crates: sale.crates,
+      pieces: 0,
+      price_per_crate: sale.pricePerCrate,
+      total_amount: sale.totalAmount,
+      amount_paid: sale.amountPaid,
+      balance: sale.balance,
+      payment_status: sale.paymentStatus,
+      payment_method: sale.paymentMethod,
+      notes: sale.notes,
+    })
+    .eq("id", id);
+
+  if (error) throw error;
+
+  await recalculateInventory();
 }
 
 export async function deleteSale(
   id: number
 ) {
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("egg_sales")
-    .select("*")
-    .eq("id", id)
-    .single();
+    .delete()
+    .eq("id", id);
 
   if (error) throw error;
 
-  // Restore inventory
-  await reverseSale(
-    data.crates,
-    0
-  );
-
-  // Remove inventory activity
-  await supabase
-    .from("inventory_activity")
-    .delete()
-    .match({
-      type: "Sale",
-      crates: -data.crates,
-      pieces: 0,
-      reference: data.customer,
-    });
-
-  const { error: deleteError } =
-    await supabase
-      .from("egg_sales")
-      .delete()
-      .eq("id", id);
-
-  if (deleteError) throw deleteError;
+  await recalculateInventory();
 }

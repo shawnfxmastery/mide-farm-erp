@@ -88,7 +88,15 @@ export default function FeedForm() {
         onSubmit={saveFeed}
         className="space-y-8"
       >
-                <div className="grid gap-7 md:grid-cols-2">
+                {/* Feed Information */}
+
+<div className="rounded-2xl border border-slate-200 p-5">
+
+  <h2 className="mb-5 text-lg font-bold text-slate-900">
+    🌽 Feed Information
+  </h2>
+
+  <div className="grid gap-7 md:grid-cols-2">
 
           <div>
             <Label className="mb-2 block text-sm font-semibold text-slate-700">
@@ -115,19 +123,40 @@ export default function FeedForm() {
               className="h-12 rounded-2xl"
             />
           </div>
+            </div>
 
-          <div>
-            <Label className="mb-2 block text-sm font-semibold text-slate-700">
-              Supplier
-            </Label>
+</div>
 
-            <Input
-              placeholder="Supplier name"
-              value={supplier}
-              onChange={(e) => setSupplier(e.target.value)}
-              className="h-12 rounded-2xl"
-            />
-          </div>
+{/* Supplier */}
+
+<div className="rounded-2xl border border-slate-200 p-5">
+
+  <h2 className="mb-5 text-lg font-bold text-slate-900">
+    🚚 Supplier
+  </h2>
+
+  <Label className="mb-2 block text-sm font-semibold text-slate-700">
+    Supplier Name
+  </Label>
+
+  <Input
+    placeholder="Supplier name"
+    value={supplier}
+    onChange={(e) => setSupplier(e.target.value)}
+    className="h-12 rounded-2xl"
+  />
+
+</div>
+
+{/* Purchase Details */}
+
+<div className="rounded-2xl border border-slate-200 p-5">
+
+  <h2 className="mb-5 text-lg font-bold text-slate-900">
+    📦 Purchase Details
+  </h2>
+
+  <div className="grid gap-7 md:grid-cols-2">
 
           <div>
             <Label className="mb-2 block text-sm font-semibold text-slate-700">
@@ -170,28 +199,44 @@ export default function FeedForm() {
               className="h-12 rounded-2xl"
             />
           </div>
-
-        </div>
-
-        <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-
-          <h2 className="mb-5 text-lg font-semibold text-slate-800">
-            Purchase Summary
-          </h2>
-
-          <div className="flex items-center justify-between">
-
-            <span className="text-slate-600">
-              Total Cost
-            </span>
-
-            <strong className="text-2xl">
-              ₦{totalCost.toLocaleString()}
-            </strong>
-
           </div>
 
         </div>
+
+        <div className="rounded-3xl border border-green-200 bg-gradient-to-r from-green-50 to-white p-6">
+
+          <h2 className="mb-6 text-lg font-bold text-slate-900">
+  💰 Purchase Summary
+</h2>
+
+<div className="flex items-center justify-between">
+
+  <div>
+
+    <p className="text-sm text-slate-500">
+      Total Purchase Cost
+    </p>
+
+    <h3 className="mt-1 text-3xl font-bold text-green-700">
+      ₦{totalCost.toLocaleString()}
+    </h3>
+
+  </div>
+
+  <div className="rounded-2xl bg-green-100 px-5 py-4">
+
+    <p className="text-xs text-green-700">
+      Bags
+    </p>
+
+    <p className="text-2xl font-bold text-green-800">
+      {bagsPurchased || 0}
+    </p>
+    </div>
+
+  </div>
+
+</div>
 
         <div>
 

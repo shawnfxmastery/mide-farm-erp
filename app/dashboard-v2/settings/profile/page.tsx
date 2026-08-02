@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { User } from "lucide-react";
+import { User, ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import SectionCard from "@/components/v2/ui/SectionCard";
 import { useToast } from "@/components/v2/ui/useToast";
 
 export default function ProfilePage() {
+  const router = useRouter();
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -92,20 +95,39 @@ export default function ProfilePage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 p-4 sm:p-6">
+
+      {/* Back Button */}
+
+      <button
+        onClick={() => router.push("/dashboard-v2/settings")}
+        className="flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-md transition-all hover:-translate-x-1 hover:shadow-xl"
+      >
+        <ArrowLeft size={22} />
+      </button>
+
+      {/* Header */}
+
       <div>
+
         <h1 className="flex items-center gap-3 text-3xl font-bold">
-          <User size={30} />
+          <User size={32} />
           Profile
         </h1>
 
         <p className="mt-2 text-slate-500">
           Manage your account information.
         </p>
+
       </div>
 
+      {/* Form */}
+
       <SectionCard>
-        <div className="space-y-5">
+
+        <div className="space-y-6">
+
           <div>
+
             <label className="mb-2 block font-medium">
               Full Name
             </label>
@@ -113,11 +135,13 @@ export default function ProfilePage() {
             <input
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full rounded-xl border p-3"
+              className="w-full rounded-2xl border border-slate-200 p-4 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-200"
             />
+
           </div>
 
           <div>
+
             <label className="mb-2 block font-medium">
               Email
             </label>
@@ -125,19 +149,23 @@ export default function ProfilePage() {
             <input
               value={email}
               disabled
-              className="w-full rounded-xl border bg-slate-100 p-3"
+              className="w-full rounded-2xl border border-slate-200 bg-slate-100 p-4 text-slate-500"
             />
+
           </div>
 
           <button
             onClick={saveProfile}
             disabled={saving}
-            className="rounded-xl bg-green-600 px-6 py-3 font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
+            className="w-full rounded-2xl bg-green-600 py-4 text-lg font-semibold text-white shadow-lg transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {saving ? "Saving..." : "Save Changes"}
           </button>
+
         </div>
+
       </SectionCard>
+
     </div>
   );
 }

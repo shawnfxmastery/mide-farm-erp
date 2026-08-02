@@ -24,6 +24,20 @@ export async function sellEggs(
   pieces: number,
   customer?: string
 ) {
+  const inventory = await getInventory();
+
+  const totalAvailable =
+    inventory.crates * 30 + inventory.pieces;
+
+  const totalRequested =
+    crates * 30 + pieces;
+
+  if (totalRequested > totalAvailable) {
+    throw new Error(
+      "Not enough eggs available in inventory."
+    );
+  }
+
   await deductInventory(crates, pieces);
 
   await logInventoryActivity(
@@ -32,6 +46,16 @@ export async function sellEggs(
     -pieces,
     customer
   );
+
+  const updatedInventory = await getInventory();
+
+  if (updatedInventory.crates < 20) {
+    console.warn(
+      "⚠ Low egg inventory. Remaining:",
+      updatedInventory.crates,
+      "crates"
+    );
+  }
 }
 
 export async function reverseProduction(
@@ -49,9 +73,26 @@ export async function reverseSale(
 }
 
 export async function clearInventory() {
-  throw new Error("clearInventory is not implemented.");
+  throw new Error(
+    "clearInventory is not implemented yet."
+  );
 }
 
 export async function currentInventory() {
   return await getInventory();
+}
+
+export async function inventoryHealth() {
+  const inventory = await getInventory();
+
+  return {
+    crates: inventory.crates,
+    pieces: inventory.pieces,
+    totalEggs:
+      inventory.crates * 30 + inventory.pieces,
+    lowStock: inventory.crates < 20,
+    outOfStock:
+      inventory.crates === 0 &&
+      inventory.pieces === 0,
+  };
 }

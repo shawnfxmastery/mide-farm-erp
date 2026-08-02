@@ -40,12 +40,13 @@ export default function SideDrawer({
   );
 
   const management = navigation.filter((item) =>
-    [
-      "Expenses",
-      "Reports",
-      "Workers",
-    ].includes(item.name)
-  );
+  [
+    "Expenses",
+    "Finance",
+    "Reports",
+    "Workers",
+  ].includes(item.name)
+);
 
   const system = navigation.filter((item) =>
     ["Settings"].includes(item.name)

@@ -4,13 +4,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
+import { getTodayNigeria } from "@/lib/date";
 
 export default function NewExpenseForm() {
   const router = useRouter();
 
   const [date, setDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  getTodayNigeria()
+);
 
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
@@ -60,40 +61,49 @@ export default function NewExpenseForm() {
 
   return (
     <form
-      onSubmit={saveExpense}
-      className="rounded-3xl bg-white p-8 shadow-lg space-y-6"
-    >
+  onSubmit={saveExpense}
+  className="space-y-8"
+>
   
 
-      {/* Date */}
+      {/* Expense Information */}
 
-      <div>
-        <label className="mb-2 block text-sm font-medium">
-          Date
-        </label>
+<div className="rounded-2xl border border-slate-200 p-5">
 
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          className="w-full rounded-xl border p-3"
-          required
-        />
-      </div>
+  <h2 className="mb-5 text-lg font-bold text-slate-900">
+    💸 Expense Information
+  </h2>
 
-      {/* Category */}
+  <div className="grid gap-7 md:grid-cols-2">
 
-      <div>
-        <label className="mb-2 block text-sm font-medium">
-          Category
-        </label>
+    <div>
 
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="w-full rounded-xl border p-3"
-          required
-        >
+      <label className="mb-2 block text-sm font-semibold text-slate-700">
+        Expense Date
+      </label>
+
+      <input
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        className="w-full rounded-xl border border-slate-300 p-3"
+        required
+      />
+
+    </div>
+
+    <div>
+
+      <label className="mb-2 block text-sm font-semibold text-slate-700">
+        Category
+      </label>
+
+      <select
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+        className="w-full rounded-xl border border-slate-300 p-3"
+        required
+      >
           <option value="">Select Category</option>
 
           <option value="Feed">Feed</option>
@@ -111,9 +121,24 @@ export default function NewExpenseForm() {
           <option value="Security">Security</option>
           <option value="Office Supplies">Office Supplies</option>
           <option value="Other">Other</option>
-        </select>
-      </div>
+       </select>
 
+    </div>
+
+  </div>
+
+</div>
+
+{/* Expense Details */}
+
+<div className="rounded-2xl border border-slate-200 p-5">
+
+  <h2 className="mb-5 text-lg font-bold text-slate-900">
+    📄 Expense Details
+  </h2>
+
+  <div className="space-y-5">
+ 
       {/* Description */}
 
       <div>
@@ -187,7 +212,49 @@ export default function NewExpenseForm() {
         />
       </div>
 
-      {/* Notes */}
+      </div>
+
+</div>
+
+{/* Expense Summary */}
+
+<div className="rounded-3xl border border-green-200 bg-gradient-to-r from-green-50 to-white p-6">
+
+  <h2 className="mb-6 text-lg font-bold text-slate-900">
+    💰 Expense Summary
+  </h2>
+
+  <div className="flex items-center justify-between">
+
+    <div>
+
+      <p className="text-sm text-slate-500">
+        Total Expense
+      </p>
+
+      <h3 className="mt-1 text-3xl font-bold text-red-600">
+        ₦{Number(amount || 0).toLocaleString()}
+      </h3>
+
+    </div>
+
+    <div className="rounded-2xl bg-red-100 px-5 py-4">
+
+      <p className="text-xs text-red-700">
+        Category
+      </p>
+
+      <p className="font-bold text-red-800">
+        {category || "-"}
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
+{/* Notes */}
 
       <div>
         <label className="mb-2 block text-sm font-medium">

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
+import { updateProduction } from "@/lib/services/production";
 
 type Props = {
   id: string;
@@ -51,37 +52,33 @@ export default function EditProductionForm({ id }: Props) {
     setLoading(false);
   }
 
-  async function updateProduction(
+  async function handleUpdateProduction(
     e: React.FormEvent<HTMLFormElement>
   ) {
     e.preventDefault();
 
     setSaving(true);
 
-    const { error } = await supabase
-      .from("egg_production")
-      .update({
+    try {
+      await updateProduction(Number(id), {
         date,
         birds: Number(birds),
         crates: Number(crates),
         pieces: Number(pieces),
-        broken_eggs: Number(brokenEggs),
+        brokenEggs: Number(brokenEggs),
         mortality: Number(mortality),
         note,
-      })
-      .eq("id", Number(id));
+      });
 
-    setSaving(false);
+      toast.success("Production updated successfully!");
 
-    if (error) {
+      router.push("/dashboard-v2/production");
+      router.refresh();
+    } catch (error: any) {
       toast.error(error.message);
-      return;
+    } finally {
+      setSaving(false);
     }
-
-    toast.success("Production updated successfully!");
-
-    router.push("/dashboard-v2/production");
-    router.refresh();
   }
 
   if (loading) {
@@ -99,7 +96,7 @@ export default function EditProductionForm({ id }: Props) {
       </h1>
 
       <form
-        onSubmit={updateProduction}
+        onSubmit={handleUpdateProduction}
         className="space-y-4"
       >
         <input

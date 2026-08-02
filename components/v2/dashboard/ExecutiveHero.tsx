@@ -1,5 +1,6 @@
 "use client";
 
+import { getTodayNigeria } from "@/lib/date";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -17,15 +18,7 @@ export default function ExecutiveHero() {
       ? "Good Afternoon"
       : "Good Evening";
 
-  const today = new Date().toLocaleDateString(
-    "en-GB",
-    {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }
-  );
+  const today = getTodayNigeria();
 
   return (
     <section className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-green-700 via-green-600 to-green-500 p-8 text-white shadow-2xl">
