@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Building2 } from "lucide-react";
+import {
+  Building2,
+  ArrowLeft,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import SectionCard from "@/components/v2/ui/SectionCard";
 import { useToast } from "@/components/v2/ui/useToast";
@@ -16,19 +20,21 @@ type CompanySettings = {
 };
 
 export default function CompanyPage() {
+  const router = useRouter();
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  const [company, setCompany] = useState<CompanySettings>({
-    id: 1,
-    farm_name: "",
-    owner_name: "",
-    phone: "",
-    email: "",
-    address: "",
-  });
+  const [company, setCompany] =
+    useState<CompanySettings>({
+      id: 1,
+      farm_name: "",
+      owner_name: "",
+      phone: "",
+      email: "",
+      address: "",
+    });
 
-  // Global Toast
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -91,20 +97,41 @@ export default function CompanyPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 p-4 sm:p-6">
+
+      {/* Back Button */}
+
+      <button
+        onClick={() =>
+          router.push("/dashboard-v2/settings")
+        }
+        className="flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-md transition-all hover:-translate-x-1 hover:shadow-xl"
+      >
+        <ArrowLeft size={22} />
+      </button>
+
+      {/* Header */}
+
       <div>
+
         <h1 className="flex items-center gap-3 text-3xl font-bold">
-          <Building2 size={30} />
+          <Building2 size={32} />
           Company Information
         </h1>
 
         <p className="mt-2 text-slate-500">
           Manage your business information.
         </p>
+
       </div>
 
+      {/* Form */}
+
       <SectionCard>
-        <div className="space-y-5">
+
+        <div className="space-y-6">
+
           <div>
+
             <label className="mb-2 block font-medium">
               Farm Name
             </label>
@@ -117,11 +144,13 @@ export default function CompanyPage() {
                   farm_name: e.target.value,
                 })
               }
-              className="w-full rounded-xl border p-3"
+              className="w-full rounded-2xl border border-slate-200 p-4 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-200"
             />
+
           </div>
 
           <div>
+
             <label className="mb-2 block font-medium">
               Owner Name
             </label>
@@ -134,13 +163,15 @@ export default function CompanyPage() {
                   owner_name: e.target.value,
                 })
               }
-              className="w-full rounded-xl border p-3"
+              className="w-full rounded-2xl border border-slate-200 p-4 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-200"
             />
+
           </div>
 
           <div>
+
             <label className="mb-2 block font-medium">
-              Phone
+              Phone Number
             </label>
 
             <input
@@ -151,11 +182,13 @@ export default function CompanyPage() {
                   phone: e.target.value,
                 })
               }
-              className="w-full rounded-xl border p-3"
+              className="w-full rounded-2xl border border-slate-200 p-4 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-200"
             />
+
           </div>
 
           <div>
+
             <label className="mb-2 block font-medium">
               Email
             </label>
@@ -169,11 +202,13 @@ export default function CompanyPage() {
                   email: e.target.value,
                 })
               }
-              className="w-full rounded-xl border p-3"
+              className="w-full rounded-2xl border border-slate-200 p-4 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-200"
             />
+
           </div>
 
           <div>
+
             <label className="mb-2 block font-medium">
               Address
             </label>
@@ -187,19 +222,25 @@ export default function CompanyPage() {
                   address: e.target.value,
                 })
               }
-              className="w-full rounded-xl border p-3"
+              className="w-full rounded-2xl border border-slate-200 p-4 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-200"
             />
+
           </div>
 
           <button
             onClick={saveCompany}
             disabled={saving}
-            className="rounded-xl bg-green-600 px-6 py-3 font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
+            className="w-full rounded-2xl bg-green-600 py-4 text-lg font-semibold text-white shadow-lg transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {saving ? "Saving..." : "Save Changes"}
+            {saving
+              ? "Saving..."
+              : "Save Changes"}
           </button>
+
         </div>
+
       </SectionCard>
+
     </div>
   );
 }

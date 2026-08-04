@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Egg } from "lucide-react";
+import {
+  Egg,
+  ArrowLeft,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import SectionCard from "@/components/v2/ui/SectionCard";
 import { useToast } from "@/components/v2/ui/useToast";
@@ -16,6 +20,8 @@ type FarmSettings = {
 };
 
 export default function FarmPage() {
+  const router = useRouter();
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -90,20 +96,41 @@ export default function FarmPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 p-4 sm:p-6">
+
+      {/* Back Button */}
+
+      <button
+        onClick={() =>
+          router.push("/dashboard-v2/settings")
+        }
+        className="flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-md transition-all hover:-translate-x-1 hover:shadow-xl"
+      >
+        <ArrowLeft size={22} />
+      </button>
+
+      {/* Header */}
+
       <div>
+
         <h1 className="flex items-center gap-3 text-3xl font-bold">
-          <Egg size={30} />
+          <Egg size={32} />
           Farm Information
         </h1>
 
         <p className="mt-2 text-slate-500">
-          Manage your farm settings.
+          Configure your farm capacity and production settings.
         </p>
+
       </div>
 
+      {/* Form */}
+
       <SectionCard>
-        <div className="space-y-5">
+
+        <div className="space-y-6">
+
           <div>
+
             <label className="mb-2 block font-medium">
               Total Bird Capacity
             </label>
@@ -117,11 +144,13 @@ export default function FarmPage() {
                   total_capacity: Number(e.target.value),
                 })
               }
-              className="w-full rounded-xl border p-3"
+              className="w-full rounded-2xl border border-slate-200 p-4 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-200"
             />
+
           </div>
 
           <div>
+
             <label className="mb-2 block font-medium">
               Current Birds
             </label>
@@ -135,11 +164,13 @@ export default function FarmPage() {
                   current_birds: Number(e.target.value),
                 })
               }
-              className="w-full rounded-xl border p-3"
+              className="w-full rounded-2xl border border-slate-200 p-4 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-200"
             />
+
           </div>
 
           <div>
+
             <label className="mb-2 block font-medium">
               Poultry Houses
             </label>
@@ -153,11 +184,13 @@ export default function FarmPage() {
                   poultry_houses: Number(e.target.value),
                 })
               }
-              className="w-full rounded-xl border p-3"
+              className="w-full rounded-2xl border border-slate-200 p-4 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-200"
             />
+
           </div>
 
           <div>
+
             <label className="mb-2 block font-medium">
               Farm Type
             </label>
@@ -170,11 +203,13 @@ export default function FarmPage() {
                   farm_type: e.target.value,
                 })
               }
-              className="w-full rounded-xl border p-3"
+              className="w-full rounded-2xl border border-slate-200 p-4 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-200"
             />
+
           </div>
 
           <div>
+
             <label className="mb-2 block font-medium">
               Eggs Per Tray
             </label>
@@ -188,19 +223,23 @@ export default function FarmPage() {
                   egg_tray_size: Number(e.target.value),
                 })
               }
-              className="w-full rounded-xl border p-3"
+              className="w-full rounded-2xl border border-slate-200 p-4 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-200"
             />
+
           </div>
 
           <button
             onClick={saveFarm}
             disabled={saving}
-            className="w-full rounded-xl bg-green-600 py-3 font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
+            className="w-full rounded-2xl bg-green-600 py-4 text-lg font-semibold text-white shadow-lg transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {saving ? "Saving..." : "Save Changes"}
           </button>
+
         </div>
+
       </SectionCard>
+
     </div>
   );
 }
