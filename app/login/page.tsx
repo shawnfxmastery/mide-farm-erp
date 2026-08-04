@@ -62,9 +62,19 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-950 px-4">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-50 px-4">
 
-      <div className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-2xl sm:p-10">
+  {/* Background Glow */}
+
+  <div className="absolute -left-32 top-0 h-96 w-96 rounded-full bg-green-200 blur-[140px] opacity-60" />
+
+  <div className="absolute -right-32 bottom-0 h-96 w-96 rounded-full bg-emerald-200 blur-[140px] opacity-60" />
+
+  <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-100 blur-[180px] opacity-40" />
+
+  {/* Login Card */}
+
+      <div className="relative w-full max-w-md rounded-[32px] border border-slate-200 bg-white p-8 shadow-xl sm:p-10">
 
         <div className="mb-8 flex flex-col items-center">
 
@@ -119,7 +129,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="midesfarm@outlook.com"
-              className="w-full rounded-xl bg-slate-800 p-4 text-white outline-none ring-1 ring-slate-700 transition focus:ring-2 focus:ring-green-500"
+              className="w-full rounded-2xl border border-slate-200 bg-white p-4 text-slate-800 placeholder:text-slate-400 outline-none transition focus:border-green-500 focus:ring-4 focus:ring-green-100"
             />
 
           </div>
@@ -143,7 +153,7 @@ export default function LoginPage() {
                   }
                 }}
                 placeholder="********"
-                className="w-full rounded-xl bg-slate-800 p-4 pr-14 text-white outline-none ring-1 ring-slate-700 transition focus:ring-2 focus:ring-green-500"
+                className="w-full rounded-2xl border border-slate-200 bg-white p-4 pr-14 text-slate-800 placeholder:text-slate-400 outline-none transition focus:border-green-500 focus:ring-4 focus:ring-green-100"
               />
 
               <button
@@ -151,7 +161,7 @@ export default function LoginPage() {
                 onClick={() =>
                   setShowPassword(!showPassword)
                 }
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-green-600 transition"
               >
                 {showPassword ? (
                   <EyeOff size={20} />

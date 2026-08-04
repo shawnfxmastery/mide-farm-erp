@@ -1,19 +1,29 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Search, Users, UserPlus } from "lucide-react";
+import {
+  Search,
+  Users,
+  ArrowLeft,
+} from "lucide-react";
+
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import SectionCard from "@/components/v2/ui/SectionCard";
 import AddUserDialog from "@/components/v2/settings/AddUserDialog";
+import EditUserDialog from "@/components/v2/settings/EditUserDialog";
 
 type User = {
   id: string;
   full_name: string;
+  email?: string;
   role: "admin" | "supervisor" | "staff";
+  status?: "Active" | "Inactive";
   created_at: string;
 };
 
 export default function UsersPage() {
+    const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -47,6 +57,19 @@ export default function UsersPage() {
     );
   }, [users, search]);
 
+  const totalUsers = users.length;
+
+const adminCount = users.filter(
+  (u) => u.role === "admin"
+).length;
+
+const supervisorCount = users.filter(
+  (u) => u.role === "supervisor"
+).length;
+
+const staffCount = users.filter(
+  (u) => u.role === "staff"
+).length;
   function roleColor(role: string) {
     switch (role) {
       case "admin":
@@ -61,33 +84,96 @@ export default function UsersPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6 p-4 sm:p-6">
+  <div className="mx-auto max-w-7xl space-y-6 p-4 sm:p-6">
 
-      {/* Header */}
+    <div className="space-y-5">
+
+      <button
+        onClick={() => router.push("/dashboard-v2/settings")}
+        className="flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-md transition-all hover:-translate-x-1 hover:shadow-xl"
+      >
+        <ArrowLeft size={22} />
+      </button>
 
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 
         <div>
-
-          <h1 className="flex items-center gap-3 text-3xl font-bold text-red-600">
-  🚨 THIS IS THE NEW PAGE 🚨
-</h1>
+          <h1 className="flex items-center gap-3 text-3xl font-bold">
+            <Users size={32} />
+            User Management
+          </h1>
 
           <p className="mt-2 text-slate-500">
             Manage administrators, supervisors and staff.
           </p>
-
         </div>
 
         <AddUserDialog />
 
       </div>
 
-      {/* Search */}
+    </div> {/* ← THIS closes space-y-5 */}
 
-      <SectionCard>
+    {/* Dashboard Cards */}
 
-        <div className="relative">
+    <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+
+  <SectionCard>
+
+    <p className="text-sm text-slate-500">
+      Total Users
+    </p>
+
+    <h2 className="mt-2 text-4xl font-bold">
+      {totalUsers}
+    </h2>
+
+  </SectionCard>
+
+  <SectionCard>
+
+    <p className="text-sm text-slate-500">
+      Administrators
+    </p>
+
+    <h2 className="mt-2 text-4xl font-bold text-red-600">
+      {adminCount}
+    </h2>
+
+  </SectionCard>
+
+  <SectionCard>
+
+    <p className="text-sm text-slate-500">
+      Supervisors
+    </p>
+
+    <h2 className="mt-2 text-4xl font-bold text-blue-600">
+      {supervisorCount}
+    </h2>
+
+  </SectionCard>
+
+  <SectionCard>
+
+    <p className="text-sm text-slate-500">
+      Staff
+    </p>
+
+    <h2 className="mt-2 text-4xl font-bold text-green-600">
+      {staffCount}
+    </h2>
+
+  </SectionCard>
+
+</div>
+
+{/* Search */}
+
+<SectionCard>
+
+  <div className="relative">
+
 
           <Search
             size={18}
@@ -183,9 +269,29 @@ export default function UsersPage() {
                       className="border-b"
                     >
 
-                      <td className="px-4 py-4 font-medium">
-                        {user.full_name}
-                      </td>
+                      <td className="px-4 py-4">
+
+  <div className="flex items-center gap-4">
+
+    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-green-600 font-bold text-white">
+      {user.full_name?.charAt(0).toUpperCase()}
+    </div>
+
+    <div>
+
+      <p className="font-semibold">
+        {user.full_name}
+      </p>
+
+      <p className="text-sm text-slate-500">
+        {user.email ?? "No email"}
+      </p>
+
+    </div>
+
+  </div>
+
+</td>
 
                       <td className="px-4 py-4">
 
@@ -194,7 +300,7 @@ export default function UsersPage() {
                             user.role
                           )}`}
                         >
-                          {user.role}
+                          {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                         </span>
 
                       </td>
@@ -207,9 +313,10 @@ export default function UsersPage() {
 
                       <td className="px-4 py-4 text-right">
 
-                        <button className="rounded-lg border px-3 py-2 hover:bg-slate-50">
-                          Edit
-                        </button>
+                        <EditUserDialog
+  user={user}
+  onUpdated={loadUsers}
+/>
 
                       </td>
 
@@ -236,16 +343,32 @@ export default function UsersPage() {
 
                   <div className="flex items-center justify-between">
 
-                    <h3 className="font-semibold">
-                      {user.full_name}
-                    </h3>
+                    <div className="flex items-center gap-3">
+
+  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-green-600 font-bold text-white">
+    {user.full_name?.charAt(0).toUpperCase()}
+  </div>
+
+  <div>
+
+    <h3 className="font-semibold">
+      {user.full_name}
+    </h3>
+
+    <p className="text-sm text-slate-500">
+      {user.email ?? "No email"}
+    </p>
+
+  </div>
+
+</div>
 
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-medium ${roleColor(
                         user.role
                       )}`}
                     >
-                      {user.role}
+                      {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                     </span>
 
                   </div>
@@ -257,9 +380,12 @@ export default function UsersPage() {
                     ).toLocaleDateString()}
                   </p>
 
-                  <button className="mt-4 w-full rounded-xl border py-2">
-                    Edit User
-                  </button>
+                  <div className="mt-4">
+  <EditUserDialog
+    user={user}
+    onUpdated={loadUsers}
+  />
+</div>
 
                 </div>
 
