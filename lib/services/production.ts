@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import { recalculateInventory } from "./recalculateInventory";
+import { logInventoryActivity } from "@/lib/inventoryActivity";
 
 export type ProductionInput = {
   date: string;
@@ -30,7 +31,16 @@ export async function createProduction(
 
   if (error) throw error;
 
+  // Recalculate inventory using all existing production and sales.
   await recalculateInventory();
+
+  // Record this new production movement in inventory history.
+  await logInventoryActivity(
+    "Production",
+    production.crates,
+    production.pieces,
+    `Production - ${production.date}`
+  );
 
   return data;
 }
@@ -54,6 +64,7 @@ export async function updateProduction(
 
   if (error) throw error;
 
+  // Recalculate inventory after editing the historical record.
   await recalculateInventory();
 }
 
@@ -67,5 +78,6 @@ export async function deleteProduction(
 
   if (error) throw error;
 
+  // Recalculate inventory after removing the record.
   await recalculateInventory();
 }

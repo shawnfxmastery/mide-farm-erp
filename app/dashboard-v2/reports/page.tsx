@@ -2,6 +2,7 @@
 
 import { formatEggQuantity } from "@/lib/utils/eggFormatter";
 import { useEffect, useState } from "react";
+import type { ReportPeriod } from "@/lib/services/reports";
 import {
   BarChart3,
   TrendingUp,
@@ -26,6 +27,9 @@ type ReportStats = {
 };
 
 export default function ReportsPage() {
+  const [period, setPeriod] =
+  useState<ReportPeriod>("today");
+
   const [stats, setStats] = useState<ReportStats>({
     totalRevenue: 0,
     totalExpenses: 0,
@@ -37,13 +41,17 @@ export default function ReportsPage() {
   });
 
   useEffect(() => {
-    loadReports();
-  }, []);
+  loadReports();
+}, [period]);
 
-  async function loadReports() {
-    const data = await getReportStats();
+async function loadReports() {
+  try {
+    const data = await getReportStats(period);
     setStats(data);
+  } catch (error) {
+    console.error("Failed to load reports:", error);
   }
+}
 
   // Convert every 30 pieces into 1 crate
   const eggs = formatEggQuantity(
@@ -119,21 +127,26 @@ export default function ReportsPage() {
         <div className="flex items-center gap-3 overflow-x-auto">
           <Calendar className="text-slate-500" size={20} />
 
-          <button className="rounded-xl bg-green-600 px-4 py-2 text-sm font-semibold text-white">
-            Today
-          </button>
-
-          <button className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium hover:bg-slate-100">
-            Week
-          </button>
-
-          <button className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium hover:bg-slate-100">
-            Month
-          </button>
-
-          <button className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium hover:bg-slate-100">
-            Year
-          </button>
+          {[
+  { label: "Today", value: "today" },
+  { label: "Week", value: "week" },
+  { label: "Month", value: "month" },
+  { label: "Year", value: "year" },
+].map((item) => (
+  <button
+    key={item.value}
+    onClick={() =>
+      setPeriod(item.value as ReportPeriod)
+    }
+    className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${
+      period === item.value
+        ? "bg-green-600 text-white"
+        : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-100"
+    }`}
+  >
+    {item.label}
+  </button>
+))}
         </div>
       </section>
 

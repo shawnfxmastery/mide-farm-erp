@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import { recalculateInventory } from "./recalculateInventory";
+import { checkInventory } from "@/lib/inventory";
 
 export type SaleInput = {
   date: string;
@@ -17,6 +18,11 @@ export type SaleInput = {
 export async function createSale(
   sale: SaleInput
 ) {
+  // Check inventory BEFORE creating the sale.
+  // This prevents selling eggs that have not
+  // been recorded as production yet.
+  await checkInventory(sale.crates);
+
   const { data, error } = await supabase
     .from("egg_sales")
     .insert({
@@ -37,6 +43,7 @@ export async function createSale(
 
   if (error) throw error;
 
+  // Recalculate inventory after the sale.
   await recalculateInventory();
 
   return data;
@@ -65,6 +72,7 @@ export async function updateSale(
 
   if (error) throw error;
 
+  // Recalculate inventory after editing the sale.
   await recalculateInventory();
 }
 
@@ -78,5 +86,7 @@ export async function deleteSale(
 
   if (error) throw error;
 
+  // Recalculate inventory after deleting the sale.
+  // The deleted crates will therefore become available again.
   await recalculateInventory();
 }
