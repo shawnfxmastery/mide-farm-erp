@@ -8,7 +8,6 @@ import {
   User,
   Building2,
   Egg,
-  Users,
   Lock,
   Settings,
   ChevronRight,
@@ -40,12 +39,6 @@ const menuItems = [
     description: "Manage farm details and capacity.",
     href: "/dashboard-v2/settings/farm",
     icon: Egg,
-  },
-  {
-    title: "User Management",
-    description: "Manage administrators, supervisors and staff.",
-    href: "/dashboard-v2/settings/users",
-    icon: Users,
   },
   {
     title: "Change Password",
