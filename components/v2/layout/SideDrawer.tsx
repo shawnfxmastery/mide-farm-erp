@@ -35,6 +35,7 @@ export default function SideDrawer({
       "Production",
       "Sales",
       "Feed",
+      "Medication",
       "Inventory",
     ].includes(item.name)
   );

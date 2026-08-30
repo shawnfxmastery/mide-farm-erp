@@ -9,6 +9,7 @@ import {
   BarChart3,
   Users,
   Truck,
+  Syringe,
   Settings,
 } from "lucide-react";
 
@@ -53,6 +54,12 @@ export const navigation: NavigationItem[] = [
     roles: ["admin", "supervisor"],
   },
 
+  {
+    name: "Medication",
+    href: "/dashboard-v2/medication",
+    icon: Syringe,
+    roles: ["admin", "supervisor"],
+  },
   {
     name: "Inventory",
     href: "/dashboard-v2/inventory",
