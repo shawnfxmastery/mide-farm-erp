@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
+import { updateSale as saveUpdatedSale } from "@/lib/services/sales";
 
 export default function EditSaleForm() {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function EditSaleForm() {
 
   const [date, setDate] = useState("");
   const [customer, setCustomer] = useState("");
+  const [customerOptions, setCustomerOptions] = useState<string[]>([]);
   const [crates, setCrates] = useState("");
   const [pricePerCrate, setPricePerCrate] = useState("");
   const [amountPaid, setAmountPaid] = useState("");
@@ -22,7 +24,25 @@ export default function EditSaleForm() {
 
   useEffect(() => {
     loadSale();
+    loadCustomers();
   }, []);
+
+  async function loadCustomers() {
+    const { data } = await supabase
+      .from("egg_sales")
+      .select("customer")
+      .order("date", { ascending: false });
+
+    setCustomerOptions(
+      Array.from(
+        new Set(
+          (data ?? [])
+            .map((sale) => sale.customer?.trim())
+            .filter((name): name is string => Boolean(name))
+        )
+      )
+    );
+  }
 
   async function loadSale() {
     const { data, error } = await supabase
@@ -59,33 +79,28 @@ export default function EditSaleForm() {
     const total = cratesNum * priceNum;
     const balance = total - paidNum;
 
-    const { error } = await supabase
-      .from("egg_sales")
-      .update({
+    try {
+      await saveUpdatedSale(Number(id), {
         date,
         customer,
         crates: cratesNum,
-        price_per_crate: priceNum,
-        total_amount: total,
-        amount_paid: paidNum,
+        pricePerCrate: priceNum,
+        totalAmount: total,
+        amountPaid: paidNum,
         balance,
-        payment_status: balance <= 0 ? "Paid" : "Owing",
-        payment_method: paymentMethod,
+        paymentStatus: balance <= 0 ? "Paid" : "Owing",
+        paymentMethod,
         notes,
-      })
-      .eq("id", id);
+      });
 
-    setSaving(false);
-
-    if (error) {
-      toast.error(error.message);
-      return;
+      toast.success("Sale updated successfully and inventory recalculated.");
+      router.push("/dashboard-v2/sales");
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message || "Unable to update sale.");
+    } finally {
+      setSaving(false);
     }
-
-    toast.success("Sale updated successfully!");
-
-    router.push("/dashboard-v2/sales");
-    router.refresh();
   }
 
   if (loading) {
@@ -123,10 +138,16 @@ export default function EditSaleForm() {
         </label>
 
         <input
+          list="saved-customers"
           value={customer}
           onChange={(e) => setCustomer(e.target.value)}
           className="w-full rounded-xl border p-3"
         />
+        <datalist id="saved-customers">
+          {customerOptions.map((name) => (
+            <option key={name} value={name} />
+          ))}
+        </datalist>
       </div>
 
       <div>

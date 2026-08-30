@@ -53,6 +53,27 @@ export async function updateSale(
   id: number,
   sale: SaleInput
 ) {
+  // Only the additional quantity needs checking. The original sale is
+  // already included in current inventory, so reducing it always adds stock back.
+  const { data: existingSale, error: existingSaleError } =
+    await supabase
+      .from("egg_sales")
+      .select("crates,pieces")
+      .eq("id", id)
+      .single();
+
+  if (existingSaleError) throw existingSaleError;
+
+  const existingEggs =
+    Number(existingSale.crates ?? 0) * 30 +
+    Number(existingSale.pieces ?? 0);
+  const newEggs = sale.crates * 30;
+  const additionalEggs = newEggs - existingEggs;
+
+  if (additionalEggs > 0) {
+    await checkInventory(0, additionalEggs);
+  }
+
   const { error } = await supabase
     .from("egg_sales")
     .update({

@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { createSale } from "@/lib/services/sales";
+import { supabase } from "@/lib/supabase";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,12 +19,38 @@ export default function NewSaleForm() {
   const [date, setDate] = useState(getTodayNigeria());
 
   const [customer, setCustomer] = useState("");
+  const [customerOptions, setCustomerOptions] = useState<string[]>([]);
+  const [addingCustomer, setAddingCustomer] = useState(true);
   const [crates, setCrates] = useState("");
   const [pricePerCrate, setPricePerCrate] = useState("");
   const [amountPaid, setAmountPaid] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    async function loadCustomers() {
+      const { data } = await supabase
+        .from("egg_sales")
+        .select("customer")
+        .order("date", { ascending: false });
+
+      const uniqueCustomers = Array.from(
+        new Set(
+          (data ?? [])
+            .map((sale) => sale.customer?.trim())
+            .filter((name): name is string => Boolean(name))
+        )
+      );
+
+      setCustomerOptions(uniqueCustomers);
+      if (uniqueCustomers.length > 0) {
+        setAddingCustomer(false);
+      }
+    }
+
+    loadCustomers();
+  }, []);
 
   const totalAmount = useMemo(() => {
     return (
@@ -114,19 +141,55 @@ export default function NewSaleForm() {
         </div>
 
         <div>
-  <Label className="mb-2 block text-sm font-semibold text-slate-700">
-    Customer
-  </Label>
+          <Label className="mb-2 block text-sm font-semibold text-slate-700">
+            Customer
+          </Label>
 
-  <Input
-    placeholder="Customer name"
-    value={customer}
-    onChange={(e) =>
-      setCustomer(e.target.value)
-    }
-    className="h-12 rounded-2xl"
-  />
-</div>
+          {!addingCustomer && (
+            <select
+              value={customer}
+              onChange={(event) => {
+                if (event.target.value === "__new__") {
+                  setAddingCustomer(true);
+                  setCustomer("");
+                  return;
+                }
+
+                setCustomer(event.target.value);
+              }}
+              className="h-12 w-full rounded-2xl border border-slate-200 bg-white px-3 text-sm outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100"
+            >
+              <option value="">Select customer</option>
+              {customerOptions.map((name) => (
+                <option key={name} value={name}>{name}</option>
+              ))}
+              <option value="__new__">+ Add new customer</option>
+            </select>
+          )}
+
+          {addingCustomer && (
+            <div className="space-y-2">
+              <Input
+                placeholder="Customer name"
+                value={customer}
+                onChange={(event) => setCustomer(event.target.value)}
+                className="h-12 rounded-2xl"
+              />
+              {customerOptions.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAddingCustomer(false);
+                    setCustomer("");
+                  }}
+                  className="text-sm font-medium text-green-700 hover:text-green-800"
+                >
+                  Choose a saved customer instead
+                </button>
+              )}
+            </div>
+          )}
+        </div>
 
   </div>
 
