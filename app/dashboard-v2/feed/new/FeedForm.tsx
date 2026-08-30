@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -22,11 +22,30 @@ export default function FeedForm() {
 
   const [feedType, setFeedType] = useState("");
   const [supplier, setSupplier] = useState("");
+  const [supplierNames, setSupplierNames] = useState<string[]>([]);
   const [bagsPurchased, setBagsPurchased] = useState("");
   const [dailyUsage, setDailyUsage] = useState("");
   const [costPerBag, setCostPerBag] = useState("");
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    async function loadSuppliers() {
+      const { data } = await supabase
+        .from("suppliers")
+        .select("name")
+        .eq("status", "Active")
+        .order("name");
+
+      setSupplierNames(
+        (data ?? [])
+          .map((item) => item.name)
+          .filter((name): name is string => Boolean(name))
+      );
+    }
+
+    loadSuppliers();
+  }, []);
 
   const totalCost = useMemo(() => {
     return (
@@ -143,8 +162,15 @@ export default function FeedForm() {
     placeholder="Supplier name"
     value={supplier}
     onChange={(e) => setSupplier(e.target.value)}
+    list="active-suppliers"
     className="h-12 rounded-2xl"
   />
+
+  <datalist id="active-suppliers">
+    {supplierNames.map((name) => (
+      <option key={name} value={name} />
+    ))}
+  </datalist>
 
 </div>
 
