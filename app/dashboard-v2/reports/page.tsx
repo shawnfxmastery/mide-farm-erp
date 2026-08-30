@@ -12,9 +12,11 @@ import {
   Wheat,
   Skull,
   Calendar,
+  Download,
 } from "lucide-react";
 
 import { getReportStats } from "@/lib/services/reports";
+import { downloadFarmReportPdf } from "@/lib/services/reportPdf";
 
 type ReportStats = {
   totalRevenue: number;
@@ -29,6 +31,7 @@ type ReportStats = {
 export default function ReportsPage() {
   const [period, setPeriod] =
   useState<ReportPeriod>("today");
+  const [exporting, setExporting] = useState(false);
 
   const [stats, setStats] = useState<ReportStats>({
     totalRevenue: 0,
@@ -52,6 +55,28 @@ async function loadReports() {
     console.error("Failed to load reports:", error);
   }
 }
+
+  const periodLabel =
+    period === "today"
+      ? "Today"
+      : period === "week"
+        ? "This Week"
+        : period === "month"
+          ? "This Month"
+          : "This Year";
+
+  function exportPdf() {
+    setExporting(true);
+
+    try {
+      downloadFarmReportPdf({
+        periodLabel,
+        ...stats,
+      });
+    } finally {
+      setExporting(false);
+    }
+  }
 
   // Convert every 30 pieces into 1 crate
   const eggs = formatEggQuantity(
@@ -105,7 +130,8 @@ async function loadReports() {
     <div className="space-y-6">
       {/* Header */}
       <section className="rounded-3xl bg-gradient-to-r from-green-600 to-emerald-500 p-6 text-white shadow-lg">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20">
             <BarChart3 size={34} />
           </div>
@@ -119,6 +145,17 @@ async function loadReports() {
               Monitor your farm performance with real-time business insights.
             </p>
           </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={exportPdf}
+            disabled={exporting}
+            className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 font-semibold text-green-700 transition hover:bg-green-50 disabled:cursor-not-allowed disabled:opacity-70"
+          >
+            <Download size={18} />
+            {exporting ? "Preparing..." : "Export PDF"}
+          </button>
         </div>
       </section>
 
