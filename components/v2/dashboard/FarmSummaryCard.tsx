@@ -103,7 +103,7 @@ export default function FarmSummaryCard() {
 
           </div>
 
-          <div className="flex h-11 w-11 items-center justify-center rounded-md bg-[#e8f1fb] text-2xl">
+          <div className="flex h-11 w-11 items-center justify-center rounded-md bg-green-100 text-2xl">
             🐔
           </div>
 
@@ -121,14 +121,14 @@ export default function FarmSummaryCard() {
           return (
             <div
               key={item.label}
-              className="rounded-md border border-[#edebe9] bg-white p-4 transition hover:border-[#0078d4] hover:shadow-sm"
+              className="rounded-md border border-[#edebe9] bg-white p-4 transition hover:border-green-500 hover:shadow-sm"
             >
 
-              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#e8f1fb]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-green-100">
 
                 <Icon
                   size={20}
-                  className="text-[#005a9e]"
+                  className="text-green-700"
                 />
 
               </div>

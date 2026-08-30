@@ -52,9 +52,9 @@ export default function QuickActionGrid() {
             <Link
               key={action.title}
               href={action.href}
-              className="rounded-md border border-[#edebe9] bg-white p-5 shadow-sm transition hover:border-[#0078d4] hover:bg-[#faf9f8]"
+              className="rounded-md border border-[#edebe9] bg-white p-5 shadow-sm transition hover:border-green-500 hover:bg-[#faf9f8]"
             >
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-md bg-[#e8f1fb] text-[#005a9e]">
+              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-md bg-green-100 text-green-700">
                 <Icon size={24} />
               </div>
 

@@ -46,7 +46,7 @@ export default function RecentActivity() {
               className="flex items-center justify-between p-4"
             >
               <div className="flex items-center gap-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#e8f1fb] text-[#005a9e]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-md bg-green-100 text-green-700">
                   <Icon size={20} />
                 </div>
 
