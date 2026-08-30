@@ -35,7 +35,7 @@ export default function WorkerList({
   });
 
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-4 shadow-xl sm:p-6">
+    <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
 
       <div className="mb-6">
 
@@ -44,7 +44,7 @@ export default function WorkerList({
           placeholder="🔍 Search by worker name or position..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 text-white placeholder-slate-500 focus:border-green-500 focus:outline-none"
+          className="w-full rounded-xl border border-slate-200 bg-white p-3 text-slate-900 placeholder-slate-400 focus:border-green-500 focus:outline-none"
         />
 
       </div>
@@ -56,7 +56,7 @@ export default function WorkerList({
       <div className="space-y-4">
 
         {filteredWorkers.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-slate-700 py-12 text-center text-slate-400">
+          <div className="rounded-xl border border-dashed border-slate-200 py-12 text-center text-slate-500">
             No workers found.
           </div>
         ) : (

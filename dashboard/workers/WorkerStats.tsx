@@ -15,22 +15,22 @@ export default function WorkerStats({
     {
       title: "Total Workers",
       value: totalWorkers,
-      color: "text-green-400",
+      color: "text-green-600",
     },
     {
       title: "Active Workers",
       value: activeWorkers,
-      color: "text-emerald-400",
+      color: "text-emerald-600",
     },
     {
       title: "Inactive Workers",
       value: inactiveWorkers,
-      color: "text-red-400",
+      color: "text-red-600",
     },
     {
       title: "Monthly Payroll",
       value: `₦${totalSalary.toLocaleString()}`,
-      color: "text-yellow-400",
+      color: "text-amber-600",
     },
   ];
 
@@ -39,9 +39,9 @@ export default function WorkerStats({
       {stats.map((stat) => (
         <div
           key={stat.title}
-          className="rounded-3xl border border-slate-800 bg-slate-900 p-5 shadow-xl transition hover:border-slate-700 hover:shadow-2xl"
+          className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md"
         >
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-slate-500">
             {stat.title}
           </p>
 

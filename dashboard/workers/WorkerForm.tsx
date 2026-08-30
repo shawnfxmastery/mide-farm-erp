@@ -36,7 +36,7 @@ export default function WorkerForm({
   onSave,
 }: WorkerFormProps) {
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-4 shadow-xl sm:p-6 lg:p-8">
+    <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:p-8">
 
       <h2 className="mb-6 text-xl font-bold sm:text-2xl">
         Add Worker
@@ -45,7 +45,7 @@ export default function WorkerForm({
       <div className="space-y-5">
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-400">
+          <label className="mb-2 block text-sm font-medium text-slate-600">
             Full Name
           </label>
 
@@ -53,12 +53,12 @@ export default function WorkerForm({
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             placeholder="John Doe"
-            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+            className="w-full rounded-xl border border-slate-200 bg-white p-3 focus:border-green-500 focus:outline-none"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-400">
+          <label className="mb-2 block text-sm font-medium text-slate-600">
             Phone Number
           </label>
 
@@ -66,12 +66,12 @@ export default function WorkerForm({
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="+234..."
-            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+            className="w-full rounded-xl border border-slate-200 bg-white p-3 focus:border-green-500 focus:outline-none"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-400">
+          <label className="mb-2 block text-sm font-medium text-slate-600">
             Position
           </label>
 
@@ -79,12 +79,12 @@ export default function WorkerForm({
             value={position}
             onChange={(e) => setPosition(e.target.value)}
             placeholder="Farm Manager"
-            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+            className="w-full rounded-xl border border-slate-200 bg-white p-3 focus:border-green-500 focus:outline-none"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-400">
+          <label className="mb-2 block text-sm font-medium text-slate-600">
             Monthly Salary
           </label>
 
@@ -93,12 +93,12 @@ export default function WorkerForm({
             value={salary}
             onChange={(e) => setSalary(e.target.value)}
             placeholder="80000"
-            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+            className="w-full rounded-xl border border-slate-200 bg-white p-3 focus:border-green-500 focus:outline-none"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-400">
+          <label className="mb-2 block text-sm font-medium text-slate-600">
             Address
           </label>
 
@@ -107,19 +107,19 @@ export default function WorkerForm({
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             placeholder="Worker address..."
-            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+            className="w-full rounded-xl border border-slate-200 bg-white p-3 focus:border-green-500 focus:outline-none"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-400">
+          <label className="mb-2 block text-sm font-medium text-slate-600">
             Status
           </label>
 
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="w-full rounded-xl border border-slate-700 bg-slate-800 p-3 focus:border-green-500 focus:outline-none"
+            className="w-full rounded-xl border border-slate-200 bg-white p-3 focus:border-green-500 focus:outline-none"
           >
             <option>Active</option>
             <option>Inactive</option>

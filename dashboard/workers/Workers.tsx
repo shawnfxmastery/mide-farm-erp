@@ -135,7 +135,7 @@ export default function Workers() {
           👷 Workers Management
         </h1>
 
-        <p className="mt-2 text-sm text-slate-400 sm:text-base">
+        <p className="mt-2 text-sm text-slate-500 sm:text-base">
           Manage your farm employees and payroll.
         </p>
 

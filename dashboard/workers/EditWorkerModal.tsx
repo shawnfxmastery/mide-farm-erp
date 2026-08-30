@@ -61,7 +61,7 @@ export default function EditWorkerModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6">
 
-      <div className="w-full max-w-3xl rounded-3xl border border-slate-700 bg-slate-900 p-8">
+      <div className="w-full max-w-3xl rounded-3xl border border-slate-200 bg-white p-8 text-slate-900">
 
         <h2 className="mb-8 text-3xl font-bold">
           👷 Edit Worker
@@ -76,7 +76,7 @@ export default function EditWorkerModal({
               onChange={(e) =>
                 setForm({ ...form, full_name: e.target.value })
               }
-              className="w-full rounded-xl bg-slate-800 p-3"
+              className="w-full rounded-xl border border-slate-200 bg-white p-3"
             />
           </div>
 
@@ -87,7 +87,7 @@ export default function EditWorkerModal({
               onChange={(e) =>
                 setForm({ ...form, phone: e.target.value })
               }
-              className="w-full rounded-xl bg-slate-800 p-3"
+              className="w-full rounded-xl border border-slate-200 bg-white p-3"
             />
           </div>
 
@@ -98,7 +98,7 @@ export default function EditWorkerModal({
               onChange={(e) =>
                 setForm({ ...form, position: e.target.value })
               }
-              className="w-full rounded-xl bg-slate-800 p-3"
+              className="w-full rounded-xl border border-slate-200 bg-white p-3"
             />
           </div>
 
@@ -113,7 +113,7 @@ export default function EditWorkerModal({
                   salary: Number(e.target.value),
                 })
               }
-              className="w-full rounded-xl bg-slate-800 p-3"
+              className="w-full rounded-xl border border-slate-200 bg-white p-3"
             />
           </div>
 
@@ -127,7 +127,7 @@ export default function EditWorkerModal({
                   address: e.target.value,
                 })
               }
-              className="w-full rounded-xl bg-slate-800 p-3"
+              className="w-full rounded-xl border border-slate-200 bg-white p-3"
             />
           </div>
 
@@ -141,7 +141,7 @@ export default function EditWorkerModal({
                   status: e.target.value,
                 })
               }
-              className="w-full rounded-xl bg-slate-800 p-3"
+              className="w-full rounded-xl border border-slate-200 bg-white p-3"
             >
               <option>Active</option>
               <option>Inactive</option>
@@ -154,7 +154,7 @@ export default function EditWorkerModal({
 
           <button
             onClick={onClose}
-            className="rounded-xl bg-slate-700 px-6 py-3"
+            className="rounded-xl bg-slate-100 px-6 py-3 text-slate-700 hover:bg-slate-200"
           >
             Cancel
           </button>

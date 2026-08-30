@@ -20,25 +20,25 @@ export default function WorkerCard({
   onDelete,
 }: WorkerCardProps) {
   return (
-    <div className="rounded-2xl border border-slate-700 bg-slate-900 p-5 transition hover:border-slate-600 hover:shadow-xl">
+    <div className="rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-slate-300 hover:shadow-md">
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 
         <div className="flex-1">
 
-          <h3 className="text-lg font-bold text-white">
+          <h3 className="text-lg font-bold text-slate-900">
             {worker.full_name}
           </h3>
 
-          <p className="mt-2 text-slate-400">
+          <p className="mt-2 text-slate-600">
             💼 {worker.position}
           </p>
 
-          <p className="mt-1 text-slate-400">
+          <p className="mt-1 text-slate-600">
             📞 {worker.phone}
           </p>
 
-          <p className="mt-2 text-lg font-semibold text-green-400">
+          <p className="mt-2 text-lg font-semibold text-green-600">
             ₦{worker.salary.toLocaleString()}
           </p>
 
@@ -47,8 +47,8 @@ export default function WorkerCard({
         <span
           className={`self-start rounded-full px-3 py-1 text-sm font-semibold ${
             worker.status === "Active"
-              ? "bg-green-500/20 text-green-400"
-              : "bg-red-500/20 text-red-400"
+              ? "bg-green-100 text-green-700"
+              : "bg-red-100 text-red-700"
           }`}
         >
           {worker.status}
