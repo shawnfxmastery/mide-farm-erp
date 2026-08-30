@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 
 export default function InventoryHeader() {
   return (
@@ -19,13 +19,23 @@ export default function InventoryHeader() {
 
       </div>
 
-      <Link
-        href="/dashboard-v2/production/new"
-        className="inline-flex items-center gap-2 rounded-2xl bg-green-600 px-5 py-3 font-semibold text-white transition hover:bg-green-700"
-      >
-        <Plus size={18} />
-        Record Production
-      </Link>
+      <div className="flex gap-3">
+        <Link
+          href="/dashboard-v2/inventory/adjustment"
+          className="inline-flex items-center gap-2 rounded-2xl border border-amber-300 bg-amber-50 px-5 py-3 font-semibold text-amber-800 transition hover:bg-amber-100"
+        >
+          <Minus size={18} />
+          Egg Adjustment
+        </Link>
+
+        <Link
+          href="/dashboard-v2/production/new"
+          className="inline-flex items-center gap-2 rounded-2xl bg-green-600 px-5 py-3 font-semibold text-white transition hover:bg-green-700"
+        >
+          <Plus size={18} />
+          Record Production
+        </Link>
+      </div>
 
     </div>
   );

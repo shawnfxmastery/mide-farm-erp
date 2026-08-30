@@ -52,6 +52,16 @@ export async function recalculateInventory() {
 
   if (salesError) throw salesError;
 
+  // Adjustments recorded after reconciliation, such as broken eggs
+  // or eggs given to replace a customer's damaged eggs.
+  const { data: adjustments, error: adjustmentsError } =
+    await supabase
+      .from("egg_adjustments")
+      .select("crates,pieces,date")
+      .gt("date", reconciliationDate);
+
+  if (adjustmentsError) throw adjustmentsError;
+
   // Start with verified physical stock
   let totalEggs =
     openingCrates * EGGS_PER_CRATE +
@@ -66,6 +76,13 @@ export async function recalculateInventory() {
 
   // Subtract sales
   for (const row of sales ?? []) {
+    totalEggs -=
+      Number(row.crates ?? 0) * EGGS_PER_CRATE +
+      Number(row.pieces ?? 0);
+  }
+
+  // Subtract eggs removed through adjustments.
+  for (const row of adjustments ?? []) {
     totalEggs -=
       Number(row.crates ?? 0) * EGGS_PER_CRATE +
       Number(row.pieces ?? 0);

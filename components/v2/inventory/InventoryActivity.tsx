@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Egg, ShoppingCart } from "lucide-react";
+import { Egg, ShoppingCart, TriangleAlert } from "lucide-react";
 
 import { supabase } from "@/lib/supabase";
 import SectionCard from "@/components/v2/ui/SectionCard";
 
 type Activity = {
   id: string;
-  type: "Production" | "Sale";
+  type: "Production" | "Sale" | "Adjustment";
   crates: number;
   pieces: number;
   reference: string | null;
@@ -45,6 +45,15 @@ export default function InventoryActivity() {
 
       if (salesError) throw salesError;
 
+      // Get adjustments, such as broken eggs or customer replacements.
+      const { data: adjustments, error: adjustmentsError } =
+        await supabase
+          .from("egg_adjustments")
+          .select("id, date, crates, pieces, reason")
+          .order("date", { ascending: false });
+
+      if (adjustmentsError) throw adjustmentsError;
+
       const productionActivities: Activity[] =
         (production ?? []).map((row) => ({
           id: `production-${row.id}`,
@@ -67,9 +76,20 @@ export default function InventoryActivity() {
           created_at: row.date,
         }));
 
+      const adjustmentActivities: Activity[] =
+        (adjustments ?? []).map((row) => ({
+          id: `adjustment-${row.id}`,
+          type: "Adjustment",
+          crates: -Number(row.crates ?? 0),
+          pieces: -Number(row.pieces ?? 0),
+          reference: row.reason || "Egg adjustment",
+          created_at: row.date,
+        }));
+
       const combined = [
         ...productionActivities,
         ...saleActivities,
+        ...adjustmentActivities,
       ];
 
       combined.sort(
@@ -125,6 +145,7 @@ export default function InventoryActivity() {
             {activities.map((activity) => {
               const isProduction =
                 activity.type === "Production";
+              const isAdjustment = activity.type === "Adjustment";
 
               return (
                 <div
@@ -138,11 +159,15 @@ export default function InventoryActivity() {
                       className={`rounded-xl p-3 ${
                         isProduction
                           ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
+                          : isAdjustment
+                            ? "bg-amber-100 text-amber-700"
+                            : "bg-red-100 text-red-700"
                       }`}
                     >
                       {isProduction ? (
                         <Egg size={22} />
+                      ) : isAdjustment ? (
+                        <TriangleAlert size={22} />
                       ) : (
                         <ShoppingCart size={22} />
                       )}
@@ -174,7 +199,9 @@ export default function InventoryActivity() {
                       className={`text-lg font-bold ${
                         isProduction
                           ? "text-green-600"
-                          : "text-red-600"
+                          : isAdjustment
+                            ? "text-amber-700"
+                            : "text-red-600"
                       }`}
                     >
                       {isProduction ? "+" : "-"}
