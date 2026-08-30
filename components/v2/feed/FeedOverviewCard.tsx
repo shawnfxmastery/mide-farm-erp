@@ -7,7 +7,7 @@ type FeedSummary = {
   totalBags: number;
   dailyUsage: number;
   totalValue: number;
-  daysRemaining: number;
+  totalUsed: number;
 };
 
 export default function FeedOverviewCard() {
@@ -15,7 +15,7 @@ export default function FeedOverviewCard() {
     totalBags: 0,
     dailyUsage: 0,
     totalValue: 0,
-    daysRemaining: 0,
+    totalUsed: 0,
   });
 
   const [loading, setLoading] = useState(true);
@@ -28,6 +28,11 @@ export default function FeedOverviewCard() {
     const { data, error } = await supabase
       .from("feed_inventory")
       .select("*");
+
+    const { data: usage } = await supabase
+      .from("feed_usage")
+      .select("bags_used, usage_date")
+      .order("usage_date", { ascending: false });
 
     if (error) {
       console.error(error);
@@ -56,18 +61,14 @@ export default function FeedOverviewCard() {
           )[0]
         : null;
 
-    const dailyUsage = latestRecord?.daily_usage ?? 0;
-
-    const daysRemaining =
-      dailyUsage > 0
-        ? Math.floor(totalBags / dailyUsage)
-        : 0;
+    const totalUsed = usage?.reduce((sum, item) => sum + Number(item.bags_used ?? 0), 0) ?? 0;
+    const dailyUsage = Number(usage?.[0]?.bags_used ?? latestRecord?.daily_usage ?? 0);
 
     setSummary({
-      totalBags,
+      totalBags: Math.max(totalBags - totalUsed, 0),
       dailyUsage,
       totalValue,
-      daysRemaining,
+      totalUsed,
     });
 
     setLoading(false);
@@ -118,15 +119,15 @@ export default function FeedOverviewCard() {
 
         <div className="rounded-2xl bg-yellow-50 p-4">
           <p className="text-sm text-slate-500">
-            📅 Days Remaining
+            🌾 Total Feed Used
           </p>
 
           <p className="mt-2 text-2xl font-bold">
-            {summary.daysRemaining}
+            {summary.totalUsed}
           </p>
 
           <p className="text-sm text-slate-500">
-            Days
+            Bags
           </p>
         </div>
 
