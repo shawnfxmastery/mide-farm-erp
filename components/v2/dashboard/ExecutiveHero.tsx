@@ -21,7 +21,7 @@ export default function ExecutiveHero() {
   const today = getTodayNigeria();
 
   return (
-    <section className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-green-700 via-green-600 to-green-500 p-8 text-white shadow-2xl">
+    <section className="relative overflow-hidden rounded-lg bg-[#0078d4] p-8 text-white shadow-sm">
 
       <div className="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-white/10 blur-3xl" />
 
@@ -29,7 +29,7 @@ export default function ExecutiveHero() {
 
       <div className="relative">
 
-        <p className="text-green-100">
+        <p className="text-blue-100">
           {today}
         </p>
 
@@ -37,7 +37,7 @@ export default function ExecutiveHero() {
           👋 {greeting}, Shawn
         </h1>
 
-        <p className="mt-3 max-w-xl text-green-100">
+        <p className="mt-3 max-w-xl text-blue-100">
           Welcome back to Mide Farm ERP.
           Here's what's happening on your farm today.
         </p>
@@ -46,7 +46,7 @@ export default function ExecutiveHero() {
 
           <Link
             href="/dashboard-v2/production/new"
-            className="flex items-center gap-2 rounded-2xl bg-white px-6 py-3 font-semibold text-green-700 transition hover:scale-105"
+            className="flex items-center gap-2 rounded-md bg-white px-5 py-2.5 font-semibold text-[#005a9e] transition hover:bg-[#f3f2f1]"
           >
             <Egg size={20} />
 
@@ -57,7 +57,7 @@ export default function ExecutiveHero() {
 
           <Link
             href="/dashboard-v2/sales/new"
-            className="flex items-center gap-2 rounded-2xl border border-white/30 bg-white/10 px-6 py-3 font-semibold backdrop-blur transition hover:bg-white/20"
+            className="flex items-center gap-2 rounded-md border border-white/40 bg-white/10 px-5 py-2.5 font-semibold backdrop-blur transition hover:bg-white/20"
           >
             <Wallet size={20} />
 

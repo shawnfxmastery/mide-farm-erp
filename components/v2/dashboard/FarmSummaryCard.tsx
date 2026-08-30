@@ -83,11 +83,11 @@ export default function FarmSummaryCard() {
   ];
 
   return (
-    <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+    <section className="overflow-hidden rounded-lg border border-[#edebe9] bg-white shadow-sm">
 
       {/* Header */}
 
-      <div className="border-b border-slate-100 bg-gradient-to-r from-green-50 to-white p-5">
+      <div className="border-b border-[#edebe9] bg-[#faf9f8] p-5">
 
         <div className="flex items-center justify-between">
 
@@ -103,7 +103,7 @@ export default function FarmSummaryCard() {
 
           </div>
 
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-green-100 text-2xl">
+          <div className="flex h-11 w-11 items-center justify-center rounded-md bg-[#e8f1fb] text-2xl">
             🐔
           </div>
 
@@ -121,14 +121,14 @@ export default function FarmSummaryCard() {
           return (
             <div
               key={item.label}
-              className="rounded-2xl border border-slate-200 bg-white p-4 transition hover:border-green-400 hover:shadow-md"
+              className="rounded-md border border-[#edebe9] bg-white p-4 transition hover:border-[#0078d4] hover:shadow-sm"
             >
 
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-green-100">
+              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#e8f1fb]">
 
                 <Icon
                   size={20}
-                  className="text-green-700"
+                  className="text-[#005a9e]"
                 />
 
               </div>
