@@ -95,8 +95,8 @@ export default function SideDrawer({
               duration-200
               ${
                 active
-                  ? "bg-gradient-to-r from-green-600 to-green-500 text-white shadow-lg shadow-green-600/20"
-                  : "text-slate-700 hover:bg-slate-100"
+                  ? "bg-[#e8f1fb] text-[#005a9e]"
+                  : "text-slate-700 hover:bg-[#f3f2f1]"
               }
             `}
           >
@@ -107,8 +107,8 @@ export default function SideDrawer({
                   p-2
                   ${
                     active
-                      ? "bg-white/20"
-                      : "bg-slate-100 group-hover:bg-white"
+                      ? "bg-[#c7e0f4]"
+                      : "bg-[#f3f2f1] group-hover:bg-white"
                   }
                 `}
               >
@@ -126,7 +126,7 @@ export default function SideDrawer({
                 transition-transform
                 ${
                   active
-                    ? "translate-x-0 text-white"
+                    ? "translate-x-0 text-[#005a9e]"
                     : "translate-x-1 text-slate-300 group-hover:translate-x-2"
                 }
               `}
@@ -158,13 +158,13 @@ export default function SideDrawer({
     >
       {/* Premium Header */}
 
-      <div className="border-b border-slate-200 bg-gradient-to-br from-green-700 via-green-600 to-green-500 p-6 text-white">
+      <div className="border-b border-[#edebe9] bg-white p-6 text-slate-900">
 
         <div className="flex items-start justify-between">
 
           <div className="flex items-center gap-4">
 
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-3xl shadow-lg">
+            <div className="flex h-14 w-14 items-center justify-center rounded-md bg-[#0078d4] text-2xl shadow-sm">
               🐔
             </div>
 
@@ -174,11 +174,11 @@ export default function SideDrawer({
                 Mide Farm ERP
               </h2>
 
-              <p className="mt-1 text-green-100">
+              <p className="mt-1 text-slate-500">
                 Poultry Management
               </p>
 
-              <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold">
+              <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-[#e8f1fb] px-3 py-1 text-xs font-semibold text-[#005a9e]">
                 <ShieldCheck size={14} />
                 Version 2.0
               </div>
@@ -189,7 +189,7 @@ export default function SideDrawer({
 
           <button
             onClick={onClose}
-            className="rounded-xl bg-white/10 p-2 transition hover:bg-white/20"
+            className="rounded-md p-2 text-slate-500 transition hover:bg-[#f3f2f1]"
           >
             <X size={22} />
           </button>
@@ -214,9 +214,9 @@ export default function SideDrawer({
 
       <div className="border-t border-slate-200 p-5">
 
-        <div className="mb-4 flex items-center gap-4 rounded-2xl bg-slate-100 p-4">
+        <div className="mb-4 flex items-center gap-4 rounded-md bg-[#f3f2f1] p-4">
 
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-green-600 text-xl font-bold text-white">
+          <div className="flex h-12 w-12 items-center justify-center rounded-md bg-[#0078d4] text-xl font-bold text-white">
             S
           </div>
 
@@ -236,7 +236,7 @@ export default function SideDrawer({
 
         <button
           onClick={logout}
-          className="flex w-full items-center justify-center gap-3 rounded-2xl bg-red-50 py-3 font-semibold text-red-600 transition hover:bg-red-100"
+          className="flex w-full items-center justify-center gap-3 rounded-md bg-red-50 py-3 font-semibold text-red-600 transition hover:bg-red-100"
         >
           <LogOut size={18} />
 

@@ -14,14 +14,14 @@ export default function MobileHeader({
       <button
         type="button"
         onClick={onMenuClick}
-        className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white shadow-sm transition hover:bg-slate-50"
+        className="flex h-10 w-10 items-center justify-center rounded-md border border-[#edebe9] bg-white shadow-sm transition hover:bg-[#f3f2f1]"
       >
         <Menu size={22} />
       </button>
 
       <button
         type="button"
-        className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white shadow-sm transition hover:bg-slate-50"
+        className="relative flex h-10 w-10 items-center justify-center rounded-md border border-[#edebe9] bg-white shadow-sm transition hover:bg-[#f3f2f1]"
       >
         <Bell size={20} />
 
