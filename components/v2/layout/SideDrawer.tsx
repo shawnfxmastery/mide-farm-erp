@@ -45,6 +45,7 @@ export default function SideDrawer({
     "Finance",
     "Reports",
     "Workers",
+    "Suppliers",
   ].includes(item.name)
 );
 

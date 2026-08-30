@@ -8,6 +8,7 @@ import {
   DollarSign,
   BarChart3,
   Users,
+  Truck,
   Settings,
 } from "lucide-react";
 
@@ -90,7 +91,7 @@ export const navigation: NavigationItem[] = [
   {
     name: "Suppliers",
     href: "/dashboard-v2/suppliers",
-    icon: Users,
+    icon: Truck,
     roles: ["admin", "supervisor"],
   },
 
