@@ -23,6 +23,20 @@ type Sale = {
   payment_status: string | null;
 };
 
+function formatDate(date: string | null) {
+  if (!date) return "–";
+
+  return new Date(`${date}T00:00:00`).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function formatMoney(amount: number | null) {
+  return `₦${Number(amount ?? 0).toLocaleString()}`;
+}
+
 export default function SalesList() {
   const [sales, setSales] = useState<Sale[]>([]);
   const [loading, setLoading] = useState(true);
@@ -208,18 +222,18 @@ export default function SalesList() {
     ))}
   </div>
     {/* Desktop View */}
-  <div className="hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm md:block">
-    <table className="min-w-full">
-      <thead className="bg-slate-50">
+  <div className="hidden overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm md:block">
+    <table className="min-w-[1050px] w-full">
+      <thead className="border-b border-slate-200 bg-slate-50">
         <tr>
-          <th className="px-5 py-4 text-left">Date</th>
-          <th className="px-5 py-4 text-left">Customer</th>
-          <th className="px-5 py-4 text-left">Crates</th>
-          <th className="px-5 py-4 text-left">Total</th>
-          <th className="px-5 py-4 text-left">Paid</th>
-          <th className="px-5 py-4 text-left">Balance</th>
-          <th className="px-5 py-4 text-left">Status</th>
-          <th className="px-5 py-4 text-center">Actions</th>
+          <th className="whitespace-nowrap px-6 py-4 text-left text-xs font-bold uppercase tracking-wide text-slate-500">Date</th>
+          <th className="min-w-48 px-6 py-4 text-left text-xs font-bold uppercase tracking-wide text-slate-500">Customer</th>
+          <th className="whitespace-nowrap px-6 py-4 text-right text-xs font-bold uppercase tracking-wide text-slate-500">Crates</th>
+          <th className="whitespace-nowrap px-6 py-4 text-right text-xs font-bold uppercase tracking-wide text-slate-500">Total</th>
+          <th className="whitespace-nowrap px-6 py-4 text-right text-xs font-bold uppercase tracking-wide text-slate-500">Paid</th>
+          <th className="whitespace-nowrap px-6 py-4 text-right text-xs font-bold uppercase tracking-wide text-slate-500">Balance</th>
+          <th className="whitespace-nowrap px-6 py-4 text-left text-xs font-bold uppercase tracking-wide text-slate-500">Status</th>
+          <th className="whitespace-nowrap px-6 py-4 text-right text-xs font-bold uppercase tracking-wide text-slate-500">Actions</th>
         </tr>
       </thead>
 
@@ -227,35 +241,35 @@ export default function SalesList() {
   {filteredSales.map((sale) => (
   <tr
     key={sale.id}
-    className="border-t border-slate-200 hover:bg-slate-50"
+    className="border-b border-slate-100 last:border-0 transition hover:bg-green-50/40"
   >
-    <td className="px-5 py-4">
-      {sale.date ?? "-"}
+    <td className="whitespace-nowrap px-6 py-4 text-sm text-slate-600">
+      {formatDate(sale.date)}
     </td>
 
-    <td className="px-5 py-4">
-      {sale.customer ?? "-"}
+    <td className="px-6 py-4 font-semibold text-slate-900">
+      {sale.customer ?? "Unnamed customer"}
     </td>
 
-    <td className="px-5 py-4">
+    <td className="whitespace-nowrap px-6 py-4 text-right font-medium text-slate-700">
       {sale.crates ?? 0}
     </td>
 
-    <td className="px-5 py-4 font-medium">
-      ₦{(sale.total_amount ?? 0).toLocaleString()}
+    <td className="whitespace-nowrap px-6 py-4 text-right font-medium text-slate-900">
+      {formatMoney(sale.total_amount)}
     </td>
 
-    <td className="px-5 py-4">
-      ₦{(sale.amount_paid ?? 0).toLocaleString()}
+    <td className="whitespace-nowrap px-6 py-4 text-right text-slate-700">
+      {formatMoney(sale.amount_paid)}
     </td>
 
-    <td className="px-5 py-4">
-      ₦{(sale.balance ?? 0).toLocaleString()}
+    <td className={`whitespace-nowrap px-6 py-4 text-right font-bold ${(sale.balance ?? 0) > 0 ? "text-orange-700" : "text-slate-700"}`}>
+      {formatMoney(sale.balance)}
     </td>
 
-    <td className="px-5 py-4">
+    <td className="whitespace-nowrap px-6 py-4">
       <span
-        className={`rounded-full px-3 py-1 text-sm font-medium ${
+        className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
           sale.payment_status === "Paid"
             ? "bg-green-100 text-green-700"
             : "bg-yellow-100 text-yellow-700"
@@ -265,30 +279,40 @@ export default function SalesList() {
       </span>
     </td>
 
-    <td className="px-5 py-4">
-  <div className="flex justify-center gap-3">
+    <td className="whitespace-nowrap px-6 py-4">
+  <div className="flex justify-end gap-2">
     <Link
       href={`/dashboard-v2/sales/edit/${sale.id}`}
+      className="inline-flex items-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-100"
     >
       <Pencil
-        size={18}
-        className="text-blue-600 hover:text-blue-800"
+        size={15}
       />
+      Edit
     </Link>
 
     <button
       onClick={() => deleteSale(sale.id)}
+      className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100"
     >
       <Trash2
-        size={18}
-        className="text-red-600 hover:text-red-800"
+        size={15}
       />
+      Delete
     </button>
   </div>
 </td>
 
 </tr>
 ))}
+
+{filteredSales.length === 0 && (
+  <tr>
+    <td colSpan={8} className="px-6 py-12 text-center text-slate-500">
+      No sales match this filter.
+    </td>
+  </tr>
+)}
 
 </tbody>
 </table>
