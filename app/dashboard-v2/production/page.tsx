@@ -2,6 +2,7 @@ import ProductionHeader from "@/components/v2/production/ProductionHeader";
 import ProductionOverviewCard from "@/components/v2/production/ProductionOverviewCard";
 import FloatingActionButton from "@/components/v2/production/FloatingActionButton";
 import ProductionList from "@/components/v2/production/ProductionList";
+import ProductionPerformance from "@/components/v2/production/ProductionPerformance";
 
 export default function ProductionPage() {
   return (
@@ -10,6 +11,8 @@ export default function ProductionPage() {
         <ProductionHeader />
 
         <ProductionOverviewCard />
+
+        <ProductionPerformance />
 
         <ProductionList />
       </div>
