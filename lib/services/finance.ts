@@ -42,7 +42,12 @@ export async function getFinanceSummary(): Promise<FinanceSummary> {
   const outstanding =
     sales?.reduce(
       (sum, sale) =>
-        sum + Number(sale.balance || 0),
+        sum + Math.max(
+          sale.balance !== null && Number.isFinite(Number(sale.balance))
+            ? Number(sale.balance)
+            : Number(sale.total_amount || 0) - Number(sale.amount_paid || 0),
+          0
+        ),
       0
     ) ?? 0;
 
