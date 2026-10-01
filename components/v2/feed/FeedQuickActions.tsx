@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingCart, Wheat } from "lucide-react";
+import { ShoppingCart, Wheat, SlidersHorizontal } from "lucide-react";
 
 export default function FeedQuickActions() {
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
 
       <Link
         href="/dashboard-v2/feed/new"
@@ -20,6 +20,12 @@ export default function FeedQuickActions() {
         <p className="mt-1 text-sm text-slate-500">
           Add new feed stock
         </p>
+      </Link>
+
+      <Link href="/dashboard-v2/feed/correction" className="rounded-2xl border border-blue-200 bg-blue-50 p-5 transition hover:bg-blue-100">
+        <SlidersHorizontal className="mb-3 text-blue-700" size={28} />
+        <h3 className="font-semibold text-slate-900">Correct Stock</h3>
+        <p className="mt-1 text-sm text-slate-500">Set physical bags</p>
       </Link>
 
       <Link

@@ -25,13 +25,17 @@ export default function FeedOverviewCard() {
   }, []);
 
   async function loadFeedSummary() {
+    const { data: settings } = await supabase.from("feed_stock_settings").select("opening_bags,reconciliation_date").eq("id", 1).maybeSingle();
+    const reconciliationDate = settings?.reconciliation_date;
     const { data, error } = await supabase
       .from("feed_inventory")
-      .select("*");
+      .select("*")
+      .gt("purchase_date", reconciliationDate ?? "1900-01-01");
 
     const { data: usage } = await supabase
       .from("feed_usage")
       .select("bags_used, usage_date")
+      .gt("usage_date", reconciliationDate ?? "1900-01-01")
       .order("usage_date", { ascending: false });
 
     if (error) {
@@ -65,7 +69,7 @@ export default function FeedOverviewCard() {
     const dailyUsage = Number(usage?.[0]?.bags_used ?? latestRecord?.daily_usage ?? 0);
 
     setSummary({
-      totalBags: Math.max(totalBags - totalUsed, 0),
+      totalBags: Math.max(Number(settings?.opening_bags ?? 0) + totalBags - totalUsed, 0),
       dailyUsage,
       totalValue,
       totalUsed,
