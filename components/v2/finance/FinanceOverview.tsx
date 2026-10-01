@@ -47,13 +47,17 @@ export default function FinanceOverview() {
     {
       title: "Revenue",
       value: `₦${summary.revenue.toLocaleString()}`,
-      color: "text-green-600",
+      color: "text-emerald-700",
+      iconColor: "text-emerald-700",
+      iconBackground: "bg-emerald-50",
       icon: DollarSign,
     },
     {
       title: "Expenses",
       value: `₦${summary.expenses.toLocaleString()}`,
-      color: "text-red-600",
+      color: "text-slate-900",
+      iconColor: "text-slate-600",
+      iconBackground: "bg-slate-100",
       icon: Wallet,
     },
     {
@@ -61,32 +65,48 @@ export default function FinanceOverview() {
       value: `₦${summary.profit.toLocaleString()}`,
       color:
         summary.profit >= 0
-          ? "text-green-600"
-          : "text-red-600",
+          ? "text-emerald-700"
+          : "text-rose-700",
+      iconColor:
+        summary.profit >= 0
+          ? "text-emerald-700"
+          : "text-rose-700",
+      iconBackground:
+        summary.profit >= 0
+          ? "bg-emerald-50"
+          : "bg-rose-50",
       icon: TrendingUp,
     },
     {
       title: "Cash Flow",
       value: `₦${summary.cashFlow.toLocaleString()}`,
-      color: "text-blue-600",
+      color: summary.cashFlow >= 0 ? "text-slate-900" : "text-rose-700",
+      iconColor: summary.cashFlow >= 0 ? "text-slate-600" : "text-rose-700",
+      iconBackground: summary.cashFlow >= 0 ? "bg-slate-100" : "bg-rose-50",
       icon: PiggyBank,
     },
     {
       title: "Outstanding",
       value: `₦${summary.outstanding.toLocaleString()}`,
-      color: "text-orange-600",
+      color: summary.outstanding > 0 ? "text-amber-700" : "text-slate-900",
+      iconColor: summary.outstanding > 0 ? "text-amber-700" : "text-slate-600",
+      iconBackground: summary.outstanding > 0 ? "bg-amber-50" : "bg-slate-100",
       icon: CreditCard,
     },
     {
       title: "Sales",
       value: summary.totalSales.toLocaleString(),
-      color: "text-purple-600",
+      color: "text-slate-900",
+      iconColor: "text-slate-600",
+      iconBackground: "bg-slate-100",
       icon: ShoppingCart,
     },
     {
       title: "Crates Sold",
       value: summary.totalCratesSold.toLocaleString(),
-      color: "text-emerald-600",
+      color: "text-slate-900",
+      iconColor: "text-slate-600",
+      iconBackground: "bg-slate-100",
       icon: Package,
     },
     {
@@ -94,41 +114,43 @@ export default function FinanceOverview() {
       value: `₦${Math.round(
         summary.averageSellingPrice
       ).toLocaleString()}`,
-      color: "text-indigo-600",
+      color: "text-slate-900",
+      iconColor: "text-slate-600",
+      iconBackground: "bg-slate-100",
       icon: Tag,
     },
   ];
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {cards.map((card) => {
         const Icon = card.icon;
 
         return (
           <div
             key={card.title}
-            className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+            className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-colors hover:border-slate-300"
           >
             <div className="flex items-center justify-between">
 
               <div>
 
-                <p className="text-sm text-slate-500">
+                <p className="text-sm font-medium text-slate-500">
                   {card.title}
                 </p>
 
                 <h2
-                  className={`mt-3 text-3xl font-bold ${card.color}`}
+                  className={`mt-2 text-2xl font-semibold tracking-tight ${card.color}`}
                 >
                   {card.value}
                 </h2>
 
               </div>
 
-              <div className="rounded-2xl bg-slate-100 p-4">
+              <div className={`rounded-xl p-3 ${card.iconBackground}`}>
                 <Icon
-                  size={30}
-                  className={card.color}
+                  size={22}
+                  className={card.iconColor}
                 />
               </div>
 
