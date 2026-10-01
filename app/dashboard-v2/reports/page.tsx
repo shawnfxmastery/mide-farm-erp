@@ -2,7 +2,7 @@
 
 import { formatEggQuantity } from "@/lib/utils/eggFormatter";
 import { useEffect, useState } from "react";
-import type { ReportPeriod } from "@/lib/services/reports";
+import { getDateRange, type ReportDateRange, type ReportPeriod } from "@/lib/services/reports";
 import {
   BarChart3,
   TrendingUp,
@@ -29,8 +29,8 @@ type ReportStats = {
 };
 
 export default function ReportsPage() {
-  const [period, setPeriod] =
-  useState<ReportPeriod>("today");
+  const [period, setPeriod] = useState<ReportPeriod>("today");
+  const [dateRange, setDateRange] = useState<ReportDateRange>(() => getDateRange("today"));
   const [exporting, setExporting] = useState(false);
 
   const [stats, setStats] = useState<ReportStats>({
@@ -45,11 +45,11 @@ export default function ReportsPage() {
 
   useEffect(() => {
   loadReports();
-}, [period]);
+}, [period, dateRange]);
 
 async function loadReports() {
   try {
-    const data = await getReportStats(period);
+    const data = await getReportStats(period, dateRange);
     setStats(data);
   } catch (error) {
     console.error("Failed to load reports:", error);
@@ -63,7 +63,19 @@ async function loadReports() {
         ? "This Week"
         : period === "month"
           ? "This Month"
-          : "This Year";
+          : period === "year"
+            ? "This Year"
+            : `${new Date(`${dateRange.startDate}T00:00:00`).toLocaleDateString("en-GB")} – ${new Date(`${dateRange.endDate}T00:00:00`).toLocaleDateString("en-GB")}`;
+
+  function choosePeriod(nextPeriod: Exclude<ReportPeriod, "custom">) {
+    setPeriod(nextPeriod);
+    setDateRange(getDateRange(nextPeriod));
+  }
+
+  function updateDateRange(field: keyof ReportDateRange, value: string) {
+    setPeriod("custom");
+    setDateRange((current) => ({ ...current, [field]: value }));
+  }
 
   function exportPdf() {
     setExporting(true);
@@ -172,9 +184,7 @@ async function loadReports() {
 ].map((item) => (
   <button
     key={item.value}
-    onClick={() =>
-      setPeriod(item.value as ReportPeriod)
-    }
+            onClick={() => choosePeriod(item.value as Exclude<ReportPeriod, "custom">)}
     className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${
       period === item.value
         ? "bg-green-600 text-white"
@@ -184,6 +194,29 @@ async function loadReports() {
     {item.label}
   </button>
 ))}
+        </div>
+
+        <div className="mt-4 grid gap-3 border-t border-slate-100 pt-4 sm:grid-cols-2">
+          <label className="text-sm font-medium text-slate-700">
+            From
+            <input
+              type="date"
+              value={dateRange.startDate}
+              max={dateRange.endDate}
+              onChange={(event) => updateDateRange("startDate", event.target.value)}
+              className="mt-1.5 block w-full rounded-xl border border-slate-200 px-3 py-2 text-slate-900 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100"
+            />
+          </label>
+          <label className="text-sm font-medium text-slate-700">
+            To
+            <input
+              type="date"
+              value={dateRange.endDate}
+              min={dateRange.startDate}
+              onChange={(event) => updateDateRange("endDate", event.target.value)}
+              className="mt-1.5 block w-full rounded-xl border border-slate-200 px-3 py-2 text-slate-900 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100"
+            />
+          </label>
         </div>
       </section>
 

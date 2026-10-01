@@ -4,7 +4,13 @@ export type ReportPeriod =
   | "today"
   | "week"
   | "month"
-  | "year";
+  | "year"
+  | "custom";
+
+export type ReportDateRange = {
+  startDate: string;
+  endDate: string;
+};
 
 type RecordRow = Record<string, any>;
 
@@ -14,7 +20,7 @@ function getNigeriaDate() {
   }).format(new Date());
 }
 
-function getDateRange(period: ReportPeriod) {
+export function getDateRange(period: Exclude<ReportPeriod, "custom">): ReportDateRange {
   const today = getNigeriaDate();
 
   const [year, month, day] = today
@@ -49,8 +55,8 @@ function getDateRange(period: ReportPeriod) {
   const end = new Date(current);
 
   return {
-    start,
-    end,
+    startDate: start.toISOString().slice(0, 10),
+    endDate: end.toISOString().slice(0, 10),
   };
 }
 
@@ -60,6 +66,8 @@ function getRecordDate(row: RecordRow) {
     row.created_at,
     row.updated_at,
     row.used_at,
+    row.usage_date,
+    row.purchase_date,
   ];
 
   for (const value of possibleDates) {
@@ -77,14 +85,11 @@ function getRecordDate(row: RecordRow) {
 
 function isInPeriod(
   row: RecordRow,
-  period: ReportPeriod
+  dateRange: ReportDateRange
 ) {
   const recordDate = getRecordDate(row);
 
   if (!recordDate) return false;
-
-  const { start, end } =
-    getDateRange(period);
 
   const nigeriaDate = new Intl.DateTimeFormat(
     "en-CA",
@@ -93,25 +98,25 @@ function isInPeriod(
     }
   ).format(recordDate);
 
-  const startDate =
-    new Intl.DateTimeFormat("en-CA", {
-      timeZone: "Africa/Lagos",
-    }).format(start);
-
-  const endDate =
-    new Intl.DateTimeFormat("en-CA", {
-      timeZone: "Africa/Lagos",
-    }).format(end);
-
   return (
-    nigeriaDate >= startDate &&
-    nigeriaDate <= endDate
+    nigeriaDate >= dateRange.startDate &&
+    nigeriaDate <= dateRange.endDate
   );
 }
 
 export async function getReportStats(
-  period: ReportPeriod = "today"
+  period: ReportPeriod = "today",
+  customRange?: ReportDateRange
 ) {
+  const dateRange =
+    period === "custom"
+      ? customRange
+      : getDateRange(period);
+
+  if (!dateRange || dateRange.startDate > dateRange.endDate) {
+    throw new Error("Please choose a valid report date range.");
+  }
+
   const [
     salesResult,
     expensesResult,
@@ -153,22 +158,22 @@ export async function getReportStats(
 
   const sales =
     (salesResult.data ?? []).filter((row) =>
-      isInPeriod(row, period)
+      isInPeriod(row, dateRange)
     );
 
   const expenses =
     (expensesResult.data ?? []).filter((row) =>
-      isInPeriod(row, period)
+      isInPeriod(row, dateRange)
     );
 
   const production =
     (productionResult.data ?? []).filter((row) =>
-      isInPeriod(row, period)
+      isInPeriod(row, dateRange)
     );
 
   const feedUsage =
     (feedResult.data ?? []).filter((row) =>
-      isInPeriod(row, period)
+      isInPeriod(row, dateRange)
     );
 
   const totalRevenue =
